@@ -1,7 +1,5 @@
 # uncompress.js
-Uncompress files in pure JavaScript
-
-Supports ZIP, RAR, and TAR files.
+Uncompress ZIP, RAR, and TAR files with pure JavaScript
 
 # Uses projects:
 * For RAR and RAR 5 it uses a fork of https://github.com/wcchoi/libunrar-js
