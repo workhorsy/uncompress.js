@@ -3,6 +3,7 @@
 // https://github.com/workhorsy/uncompress.js
 
 
+
 function getFileMimeType(file_name) {
 	file_name = file_name.toLowerCase();
 	if (file_name.endsWith('.jpeg') || file_name.endsWith('.jpg')) {
