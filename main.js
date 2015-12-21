@@ -1,6 +1,6 @@
 // Copyright (c) 2015 Matthew Brennan Jones <matthew.brennan.jones@gmail.com>
-// This software is licensed under AGPL v3 or later
-// http://github.com/workhorsy/comic_book_reader
+// This software is licensed under a MIT License
+// https://github.com/workhorsy/uncompress.js
 
 
 function getFileMimeType(file_name) {
