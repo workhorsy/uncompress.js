@@ -21,24 +21,29 @@ function getFileMimeType(file_name) {
 }
 
 function onEach(archive, i) {
+	// If this is the last entry, close the archive
 	if (i >= archive.entries.length) {
 		archiveClose(archive);
 		return;
 	}
 
+	// Read the data for this entry
 	var entry = archive.entries[i];
-
 	entry.readData(function(data) {
+		// Convert the data into a Object URL
 		var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 		var url = URL.createObjectURL(blob);
 
+		// Add a br to the document
 		document.body.appendChild(document.createElement('br'));
 
+		// Add a link to the Object URL
 		var a = document.createElement('a');
 		a.href = url;
 		a.innerHTML = entry.name;
 		document.body.appendChild(a);
 
+		// Start the next iteration
 		setTimeout(function() {
 			onEach(archive, i + 1);
 		}, 0);
@@ -58,14 +63,17 @@ window.onload = function() {
 		var blob = file.slice();
 		var file_name = file.name;
 
-		// Convert the file into an array buffer
+		// Convert the blob into an array buffer
 		var reader = new FileReader();
 		reader.onload = function(evt) {
 			var array_buffer = reader.result;
+
+			// Open the file as an archive
 			var archive = archiveOpen(file_name, array_buffer);
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 
+				// Start iterating over each entry in the archive
 				onEach(archive, 0);
 			}
 		};
