@@ -20,6 +20,22 @@ function getFileMimeType(file_name) {
 	}
 }
 
+function toFriendlySize(size) {
+	if (size >= 1024000000) {
+		return (size / 1024000000).toFixed(2) + ' GB';
+	} else if (size >= 1024000) {
+		return (size / 1024000).toFixed(2) + ' MB';
+	} else if (size >= 1024) {
+		return (size / 1024).toFixed(2) + ' KB';
+	} else if (size >= 1) {
+		return (size / 1).toFixed(2) + ' B';
+	} else if (size === 0) {
+		return '0 B';
+	}
+
+	return '?';
+}
+
 function onEach(archive, i) {
 	// If this is the last entry, close the archive
 	if (i >= archive.entries.length) {
@@ -40,7 +56,7 @@ function onEach(archive, i) {
 		// Add a link to the Object URL
 		var a = document.createElement('a');
 		a.href = url;
-		a.innerHTML = entry.name;
+		a.innerHTML = entry.name + ' (' + toFriendlySize(data.byteLength) + ')';
 		document.body.appendChild(a);
 
 		// Start the next iteration
