@@ -51,6 +51,14 @@ function archiveOpen(file_name, array_buffer) {
 	};
 }
 
+function archiveClose(archive) {
+	archive.file_name = null;
+	archive.archive_type = null;
+	archive.array_buffer = null;
+	archive.entries = null;
+	archive.handle = null;
+}
+
 function _rarOpen(file_name, array_buffer) {
 	// Create an array of rar files
 	var rar_files = [{

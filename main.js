@@ -22,6 +22,7 @@ function getFileMimeType(file_name) {
 
 function onEach(archive, i) {
 	if (i >= archive.entries.length) {
+		archiveClose(archive);
 		return;
 	}
 
