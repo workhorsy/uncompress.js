@@ -41,6 +41,13 @@ function archiveOpen(file_name, array_buffer) {
 			break;
 	}
 
+	// Sort the entries by name
+	entries.sort(function(a, b) {
+		if(a.name < b.name) return -1;
+		if(a.name > b.name) return 1;
+		return 0;
+	});
+
 	// Return the archive object
 	return {
 		file_name: file_name,
