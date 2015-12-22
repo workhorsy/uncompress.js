@@ -266,10 +266,15 @@ var readRARFileNames = function(data, password) {
 	var header = status.header;
 
 	// Get all the file names
-	var fileNames = [];
+	var entries = [];
 	var res = ERAR_SUCCESS;
 	while (res === ERAR_SUCCESS) {
-		fileNames.push(getFileName(header));
+		var flags = header.get_Flags();
+		var is_file = (flags & RHDF_DIRECTORY) === 0;
+		entries.push({
+			name: getFileName(header),
+			is_file: is_file
+		});
 		var PFCode = _RARProcessFileW(handle, RAR_SKIP, 0, 0);
 		if (PFCode !== ERAR_SUCCESS) {
 			cleanup(handle, data, cb);
@@ -281,13 +286,10 @@ var readRARFileNames = function(data, password) {
 	_RARCloseArchive(handle);
 	handle = null;
 
-	// Sort the file names lexically
-	fileNames.sort();
-
-	for (var i=0; i<fileNames.length; ++i) {
-		console.info('!!!!!!!!!! ' + fileNames[i]);
+	for (var i=0; i<entries.length; ++i) {
+		console.info('!!!!!!!!!! ' + entries[i].name);
 	}
-	return fileNames;
+	return entries;
 }
 
 

@@ -2,7 +2,7 @@
 // This software is licensed under a MIT License
 // https://github.com/workhorsy/uncompress.js
 
-
+var entryList = null;
 
 function getFileMimeType(file_name) {
 	file_name = file_name.toLowerCase();
@@ -46,18 +46,20 @@ function onEach(archive, i) {
 	// Read the data for this entry
 	var entry = archive.entries[i];
 	entry.readData(function(data) {
-		// Convert the data into a Object URL
-		var blob = new Blob([data], {type: getFileMimeType(entry.name)});
-		var url = URL.createObjectURL(blob);
+		if (entry.is_file) {
+			// Convert the data into a Object URL
+			var blob = new Blob([data], {type: getFileMimeType(entry.name)});
+			var url = URL.createObjectURL(blob);
 
-		// Add a br to the document
-		document.body.appendChild(document.createElement('br'));
+			// Add a br to the document
+			entryList.appendChild(document.createElement('br'));
 
-		// Add a link to the Object URL
-		var a = document.createElement('a');
-		a.href = url;
-		a.innerHTML = entry.name + ' (' + toFriendlySize(data.byteLength) + ')';
-		document.body.appendChild(a);
+			// Add a link to the Object URL
+			var a = document.createElement('a');
+			a.href = url;
+			a.innerHTML = entry.name + ' (' + toFriendlySize(data.byteLength) + ')';
+			entryList.appendChild(a);
+		}
 
 		// Start the next iteration
 		setTimeout(function() {
@@ -67,10 +69,13 @@ function onEach(archive, i) {
 }
 
 window.onload = function() {
+	entryList = document.getElementById('entryList');
+
 	document.getElementById('fileInput').onchange = function() {
 		// Just return if there is no file selected
 		var file_input = document.getElementById('fileInput');
 		if (file_input.files.length === 0) {
+			entryList.innerHTML = 'No file selected';
 			return;
 		}
 
@@ -90,7 +95,10 @@ window.onload = function() {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 
 				// Start iterating over each entry in the archive
+				entryList.innerHTML = '';
 				onEach(archive, 0);
+			} else {
+				entryList.innerHTML = 'Failed to uncompress file';
 			}
 		};
 		reader.readAsArrayBuffer(blob);

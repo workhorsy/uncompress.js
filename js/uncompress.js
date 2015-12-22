@@ -100,13 +100,21 @@ function _tarOpen(file_name, array_buffer) {
 
 function _rarGetEntries(rar_handle) {
 	// Get the entries
-	var file_names = readRARFileNames(rar_handle.rar_files, rar_handle.password);
+	var info = readRARFileNames(rar_handle.rar_files, rar_handle.password);
 	var entries = [];
-	Object.keys(file_names).forEach(function(i) {
+	Object.keys(info).forEach(function(i) {
+		var name = info[i].name;
+		var is_file = info[i].is_file;
+
 		entries.push({
-			name: file_names[i],
+			name: name,
+			is_file: info[i].is_file,
 			readData: function(cb) {
-				readRARContent(rar_handle.rar_files, rar_handle.password, file_names[i], cb);
+				if (is_file) {
+					readRARContent(rar_handle.rar_files, rar_handle.password, name, cb);
+				} else {
+					cb(null);
+				}
 			}
 		});
 	});
@@ -121,11 +129,19 @@ function _zipGetEntries(zip_handle) {
 	var entries = [];
 	Object.keys(zip.files).forEach(function(i) {
 		var zip_entry = zip.files[i];
+		var name = zip_entry.name;
+		var is_file = ! zip_entry.dir;
+
 		entries.push({
-			name: zip_entry.name,
+			name: name,
+			is_file: is_file,
 			readData: function(cb) {
-				var data = zip_entry.asArrayBuffer();
-				cb(data);
+				if (is_file) {
+					var data = zip_entry.asArrayBuffer();
+					cb(data);
+				} else {
+					cb(null);
+				}
 			}
 		});
 	});
@@ -139,11 +155,18 @@ function _tarGetEntries(tar_handle) {
 	// Get all the entries
 	var entries = [];
 	tar_entries.forEach(function(entry) {
+		var is_file = true;
+
 		entries.push({
 			name: entry.name,
+			is_file: is_file,
 			readData: function(cb) {
-				var data = tarGetEntryData(entry, tar_handle.array_buffer);
-				cb(data.buffer);
+				if (is_file) {
+					var data = tarGetEntryData(entry, tar_handle.array_buffer);
+					cb(data.buffer);
+				} else {
+					cb(null);
+				}
 			}
 		});
 	});
