@@ -47,11 +47,11 @@ function onEach(archive, i) {
 	var entry = archive.entries[i];
 	entry.readData(function(data) {
 		if (entry.is_file) {
-			// Convert the data into a Object URL
+			// Convert the data into an Object URL
 			var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 			var url = URL.createObjectURL(blob);
 
-			// Add a br to the document
+			// Add a BR to the document
 			entryList.appendChild(document.createElement('br'));
 
 			// Add a link to the Object URL
@@ -61,7 +61,7 @@ function onEach(archive, i) {
 			entryList.appendChild(a);
 		}
 
-		// Start the next iteration
+		// Schedule the next iteration. Use a timeout so we don't block too long.
 		setTimeout(function() {
 			onEach(archive, i + 1);
 		}, 0);
