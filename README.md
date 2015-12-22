@@ -8,7 +8,6 @@ Uncompress ZIP, RAR, and TAR files with pure JavaScript
 # Bugs
 * Add the most trivial example possible
 * Add an example that uses a web worker
-* Move polyfill into example
 * Untar assumes there are no directories in the archive.
 
 # Bugs and Corrections
