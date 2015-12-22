@@ -4,6 +4,17 @@
 
 var entryList = null;
 
+// FIXME: This function is super inefficient
+function isValidImageType(file_name) {
+	file_name = file_name.toLowerCase();
+	return file_name.endsWith('.jpeg') ||
+			file_name.endsWith('.jpg') ||
+			file_name.endsWith('.png') ||
+			file_name.endsWith('.bmp') ||
+			file_name.endsWith('.gif');
+}
+
+// FIXME: This function is super inefficient
 function getFileMimeType(file_name) {
 	file_name = file_name.toLowerCase();
 	if (file_name.endsWith('.jpeg') || file_name.endsWith('.jpg')) {
@@ -61,6 +72,7 @@ function onEach(archive, i) {
 			entryList.appendChild(a);
 		}
 
+		// FIXME: Change readData so it uses setTimeout internally with rar
 		// Schedule the next iteration. Use a timeout so we don't block too long.
 		setTimeout(function() {
 			onEach(archive, i + 1);
@@ -93,6 +105,15 @@ window.onload = function() {
 			var archive = archiveOpen(file_name, array_buffer);
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
+
+				// Get only the entries that are images
+				var entries = [];
+				archive.entries.forEach(function(entry) {
+					if (isValidImageType(entry.name)) {
+						entries.push(entry);
+					}
+				});
+				archive.entries = entries;
 
 				// Start iterating over each entry in the archive
 				entryList.innerHTML = '';
