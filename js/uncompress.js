@@ -146,6 +146,7 @@ function _rarGetEntries(rar_handle) {
 		entries.push({
 			name: name,
 			is_file: info[i].is_file,
+			size: info[i].size,
 			readData: function(cb) {
 				if (is_file) {
 					readRARContent(rar_handle.rar_files, rar_handle.password, name, cb);
@@ -168,10 +169,12 @@ function _zipGetEntries(zip_handle) {
 		var zip_entry = zip.files[i];
 		var name = zip_entry.name;
 		var is_file = ! zip_entry.dir;
+		var size = zip_entry._data ? zip_entry._data.uncompressedSize : 0;
 
 		entries.push({
 			name: name,
 			is_file: is_file,
+			size: size,
 			readData: function(cb) {
 				if (is_file) {
 					var data = zip_entry.asArrayBuffer();
@@ -194,10 +197,12 @@ function _tarGetEntries(tar_handle) {
 	tar_entries.forEach(function(entry) {
 		var name = entry.name;
 		var is_file = entry.is_file;
+		var size = entry.size;
 
 		entries.push({
 			name: name,
 			is_file: is_file,
+			size: size,
 			readData: function(cb) {
 				if (is_file) {
 					var data = tarGetEntryData(entry, tar_handle.array_buffer);

@@ -241,6 +241,7 @@ var openArchive = function(arcData, password, data, cb) {
 	};
 }
 
+// FIXME: Rename this, because it no longer just returns the file names.
 var readRARFileNames = function(data, password) {
 //	console.log("Current working directory: ",FS.cwd())
 
@@ -271,9 +272,11 @@ var readRARFileNames = function(data, password) {
 	while (res === ERAR_SUCCESS) {
 		var flags = header.get_Flags();
 		var is_file = (flags & RHDF_DIRECTORY) === 0;
+		var size = header.get_UnpSize();
 		entries.push({
 			name: getFileName(header),
-			is_file: is_file
+			is_file: is_file,
+			size: size
 		});
 		var PFCode = _RARProcessFileW(handle, RAR_SKIP, 0, 0);
 		if (PFCode !== ERAR_SUCCESS) {

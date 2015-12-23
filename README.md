@@ -6,7 +6,6 @@ Uncompress ZIP, RAR, and TAR files with pure JavaScript
 * For Zip it uses https://github.com/Stuk/jszip (MIT License)
 
 # Bugs
-* the entry should know the length before uncompressing
 * Add the most trivial example possible
 
 # Bugs and Corrections

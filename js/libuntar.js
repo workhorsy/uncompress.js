@@ -22,15 +22,15 @@ function tarGetEntries(filename, array_buffer) {
 			break;
 		}
 
-		// Get entry length
-		var entry_length = parseInt(saneJoin(saneMap(view.slice(offset + 124, offset + 124 + 12), String.fromCharCode), ''), 8);
+		// Get entry size
+		var entry_size = parseInt(saneJoin(saneMap(view.slice(offset + 124, offset + 124 + 12), String.fromCharCode), ''), 8);
 		var entry_type = saneMap(view.slice(offset + 156, offset + 156 + 1), String.fromCharCode) | 0;
 
 		// Save this as en entry if it is a file or directory
 		if (entry_type === 0 || entry_type === 5) {
 			var entry = {
 				name: entry_name,
-				length: entry_length,
+				size: entry_size,
 				is_file: entry_type == 0,
 				offset: offset
 			};
@@ -38,7 +38,7 @@ function tarGetEntries(filename, array_buffer) {
 		}
 
 		// Round the offset up to be divisible by 512
-		offset += (entry_length + 512);
+		offset += (entry_size + 512);
 		if (offset % 512 > 0) {
 			var even = (offset / 512) | 0; // number of times it goes evenly into 512
 			offset = (even + 1) * 512;
@@ -51,9 +51,9 @@ function tarGetEntries(filename, array_buffer) {
 function tarGetEntryData(entry, array_buffer) {
 	var view = new Uint8Array(array_buffer);
 	var offset = entry.offset;
-	var length = entry.length;
+	var size = entry.size;
 
 	// Get entry data
-	var entry_data = view.slice(offset + 512, offset + 512 + length);
+	var entry_data = view.slice(offset + 512, offset + 512 + size);
 	return entry_data;
 }
