@@ -11,6 +11,7 @@ function isValidImageType(file_name) {
 			file_name.endsWith('.jpg') ||
 			file_name.endsWith('.png') ||
 			file_name.endsWith('.bmp') ||
+			file_name.endsWith('.webp') ||
 			file_name.endsWith('.gif');
 }
 
@@ -23,6 +24,8 @@ function getFileMimeType(file_name) {
 		return 'image/png';
 	} else if (file_name.endsWith('.bmp')) {
 		return 'image/bmp';
+	} else if (file_name.endsWith('.webp')) {
+		return 'image/webp';
 	} else if (file_name.endsWith('.gif')) {
 		return 'image/gif';
 	} else {
