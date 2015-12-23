@@ -3,10 +3,10 @@
 // https://github.com/workhorsy/uncompress.js
 "use strict";
 
-importScripts("../js/libunrar.js");
-importScripts("../js/jszip.js");
-importScripts("../js/libuntar.js");
-importScripts("../js/uncompress.js");
+importScripts("../../js/libunrar.js");
+importScripts("../../js/jszip.js");
+importScripts("../../js/libuntar.js");
+importScripts("../../js/uncompress.js");
 
 
 // FIXME: This function is super inefficient
