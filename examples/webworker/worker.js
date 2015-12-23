@@ -66,7 +66,7 @@ function onUncompress(archive) {
 					file_name: entry.name,
 					url: url,
 					index: i,
-					length: data.byteLength
+					size: data.byteLength
 				};
 				self.postMessage(message);
 			}

@@ -30,7 +30,7 @@ window.onload = function() {
 			case 'uncompress_each':
 				var file_name = e.data.file_name;
 				var url = e.data.url;
-				var length = e.data.length;
+				var size = e.data.size;
 
 				// Add a BR to the document
 				entryList.appendChild(document.createElement('br'));
@@ -38,7 +38,7 @@ window.onload = function() {
 				// Add a link to the Object URL
 				var a = document.createElement('a');
 				a.href = url;
-				a.innerHTML = file_name + ' (' + toFriendlySize(length) + ')';
+				a.innerHTML = file_name + ' (' + toFriendlySize(size) + ')';
 				a.addEventListener('click', function(e) {
 					e.preventDefault();
 					var img = document.getElementById('currentImage');
