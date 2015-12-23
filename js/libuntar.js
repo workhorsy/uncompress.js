@@ -23,7 +23,7 @@ function tarGetEntries(filename, array_buffer) {
 		}
 
 		// Get entry length
-		var entry_length = parseInt(saneMap(view.slice(offset + 124, offset + 124 + 12), String.fromCharCode).join(''), 8);
+		var entry_length = parseInt(saneJoin(saneMap(view.slice(offset + 124, offset + 124 + 12), String.fromCharCode), ''), 8);
 
 		// Save this as en entry
 		var entry = {

@@ -213,9 +213,9 @@ function _tarGetEntries(tar_handle) {
 
 function isRarFile(array_buffer) {
 	// The three styles of RAR headers
-	var rar_header1 = [0x52, 0x45, 0x7E, 0x5E].join(', '); // old
-	var rar_header2 = [0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x00].join(', '); // 1.5 to 4.0
-	var rar_header3 = [0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x01, 0x00].join(', '); // 5.0
+	var rar_header1 = saneJoin([0x52, 0x45, 0x7E, 0x5E], ', '); // old
+	var rar_header2 = saneJoin([0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x00], ', '); // 1.5 to 4.0
+	var rar_header3 = saneJoin([0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x01, 0x00], ', '); // 5.0
 
 	// Just return false if the file is smaller than the header
 	if (array_buffer.byteLength < 8) {
@@ -231,7 +231,7 @@ function isRarFile(array_buffer) {
 
 function isZipFile(array_buffer) {
 	// The ZIP header
-	var zip_header = [0x50, 0x4b, 0x03, 0x04].join(', ');
+	var zip_header = saneJoin([0x50, 0x4b, 0x03, 0x04], ', ');
 
 	// Just return false if the file is smaller than the header
 	if (array_buffer.byteLength < 4) {
@@ -245,7 +245,7 @@ function isZipFile(array_buffer) {
 
 function isTarFile(array_buffer) {
 	// The TAR header
-	var tar_header = ['u', 's', 't', 'a', 'r'].join(', ');
+	var tar_header = saneJoin(['u', 's', 't', 'a', 'r'], ', ');
 
 	// Just return false if the file is smaller than the header size
 	if (array_buffer.byteLength < 512) {
@@ -253,6 +253,6 @@ function isTarFile(array_buffer) {
 	}
 
 	// Return true if the header matches the TAR header
-	var header = saneMap(new Uint8Array(array_buffer).slice(257, 257 + 5), String.fromCharCode).join(', ');
+	var header = saneJoin(saneMap(new Uint8Array(array_buffer).slice(257, 257 + 5), String.fromCharCode), ', ');
 	return (header === tar_header);
 }
