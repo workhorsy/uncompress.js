@@ -55,8 +55,12 @@ function onClick(entry) {
 		// Convert the data into an Object URL
 		var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 		var url = URL.createObjectURL(blob);
-		console.info(url);
-		window.open(url, '_blank');
+
+		var img = document.getElementById('currentImage');
+		img.src = url;
+		img.onload = function() {
+			URL.revokeObjectURL(url);
+		};
 	});
 }
 
@@ -85,13 +89,6 @@ function createLinkForEachEntry(archive) {
 				console.info('clicked .................');
 				e.preventDefault();
 				onClick(entry);
-			});
-			a.addEventListener('mouseup', function(e) {
-				e.preventDefault();
-				if (e.which === 2) {
-					console.info('mouseup .................: ' + e.which);
-					onClick(entry);
-				}
 			});
 
 			entryList.appendChild(a);
@@ -127,6 +124,7 @@ window.onload = function() {
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 				entryList.innerHTML = '';
+				document.getElementById('currentImage').src = '';
 				createLinkForEachEntry(archive);
 			} else {
 				entryList.innerHTML = 'Failed to uncompress file';

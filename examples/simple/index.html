@@ -9,24 +9,38 @@
 		<script src="../../js/uncompress.js"></script>
 		<script src="polyfill.js"></script>
 		<script src="main.js"></script>
+		<style>
+			#currentImage {
+				width: 200px;
+				height: auto;
+				border: 1px solid black;
+				float: right;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>Uncompress a file in the browser</h1>
 
-		<input id="fileInput" type="file" required="required" />
+		<div>
+			<img id="currentImage" alt="No image loaded" />
+		</div>
 
-		<p>
-			This will uncompress each entry when the link is clicked on
-		</p>
-		<div id="entryList"></div>
+		<div>
+			<input id="fileInput" type="file" required="required" />
 
-		<p>
-			Try it on these archives that contain images:
-			<ul>
-				<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.rar?raw=true">example.rar</a></li>
-				<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.tar?raw=true">example.tar</a></li>
-				<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.zip?raw=true">example.zip</a></li>
-			</ul>
-		</p>
+			<p>
+				This will uncompress each entry when the link is clicked on
+			</p>
+			<div id="entryList"></div>
+
+			<p>
+				Try it on these archives that contain images:
+				<ul>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.rar?raw=true">example.rar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.tar?raw=true">example.tar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.zip?raw=true">example.zip</a></li>
+				</ul>
+			</p>
+		</div>
 	</body>
 </html>
