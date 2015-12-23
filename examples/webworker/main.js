@@ -39,6 +39,12 @@ window.onload = function() {
 				var a = document.createElement('a');
 				a.href = url;
 				a.innerHTML = file_name + ' (' + toFriendlySize(length) + ')';
+				a.addEventListener('click', function(e) {
+					e.preventDefault();
+					var img = document.getElementById('currentImage');
+					img.src = this.href;
+				});
+
 				entryList.appendChild(a);
 				break;
 			case 'invalid_file':

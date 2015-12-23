@@ -4,23 +4,38 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>uncompress.js</title>
 		<script src="main.js"></script>
+		<style>
+			#currentImage {
+				width: 60%;
+				height: auto;
+				border: 1px solid black;
+				float: right;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>Uncompress a file using a web worker</h1>
-		<input id="fileInput" type="file" required="required" />
 
-		<p>
-			This will uncompress all entries as soon as the link is created
-		</p>
-		<div id="entryList"></div>
+		<div>
+			<img id="currentImage" alt="No image loaded" />
+		</div>
 
-		<p>
-			Try it on these archives that contain images:
-			<ul>
-				<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.rar?raw=true">example.rar</a></li>
-				<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.tar?raw=true">example.tar</a></li>
-				<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.zip?raw=true">example.zip</a></li>
-			</ul>
-		</p>
+		<div>
+			<input id="fileInput" type="file" required="required" />
+
+			<p>
+				This will uncompress all entries as soon as the archive is loaded
+			</p>
+			<div id="entryList"></div>
+
+			<p>
+				Try it on these archives that contain images:
+				<ul>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.rar?raw=true">example.rar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.tar?raw=true">example.tar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.zip?raw=true">example.zip</a></li>
+				</ul>
+			</p>
+		</div>
 	</body>
 </html>
