@@ -50,37 +50,55 @@ function toFriendlySize(size) {
 	return '?';
 }
 
-function onEach(archive, i) {
-	// If this is the last entry, close the archive
-	if (i >= archive.entries.length) {
-		archiveClose(archive);
-		return;
-	}
-
-	// Read the data for this entry
-	var entry = archive.entries[i];
+function onClick(entry) {
 	entry.readData(function(data) {
-		if (entry.is_file) {
-			// Convert the data into an Object URL
-			var blob = new Blob([data], {type: getFileMimeType(entry.name)});
-			var url = URL.createObjectURL(blob);
+		// Convert the data into an Object URL
+		var blob = new Blob([data], {type: getFileMimeType(entry.name)});
+		var url = URL.createObjectURL(blob);
+		console.info(url);
+		window.open(url, '_blank');
+	});
+}
 
+function createLinkForEachEntry(archive) {
+	// Get only the entries that are images
+	var entries = [];
+	archive.entries.forEach(function(entry) {
+		if (isValidImageType(entry.name)) {
+			entries.push(entry);
+		}
+	});
+	archive.entries = entries;
+
+	archive.entries.forEach(function(entry) {
+		if (entry.is_file) {
 			// Add a BR to the document
 			entryList.appendChild(document.createElement('br'));
 
 			// Add a link to the Object URL
 			var a = document.createElement('a');
-			a.href = url;
-			a.innerHTML = entry.name + ' (' + toFriendlySize(data.byteLength) + ')';
+			a.innerHTML = entry.name + ' (' + toFriendlySize(entry.length) + ')';
+			a.href = entry.name;
+
+			// Uncompress the entry when the link is clicked on
+			a.addEventListener('click', function(e) {
+				console.info('clicked .................');
+				e.preventDefault();
+				onClick(entry);
+			});
+			a.addEventListener('mouseup', function(e) {
+				e.preventDefault();
+				if (e.which === 2) {
+					console.info('mouseup .................: ' + e.which);
+					onClick(entry);
+				}
+			});
+
 			entryList.appendChild(a);
 		}
-
-		// FIXME: Change readData so it uses setTimeout internally with rar
-		// Schedule the next iteration. Use a timeout so we don't block too long.
-		setTimeout(function() {
-			onEach(archive, i + 1);
-		}, 0);
 	});
+
+	//archiveClose(archive);
 }
 
 window.onload = function() {
@@ -108,19 +126,8 @@ window.onload = function() {
 			var archive = archiveOpen(file_name, array_buffer);
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
-
-				// Get only the entries that are images
-				var entries = [];
-				archive.entries.forEach(function(entry) {
-					if (isValidImageType(entry.name)) {
-						entries.push(entry);
-					}
-				});
-				archive.entries = entries;
-
-				// Start iterating over each entry in the archive
 				entryList.innerHTML = '';
-				onEach(archive, 0);
+				createLinkForEachEntry(archive);
 			} else {
 				entryList.innerHTML = 'Failed to uncompress file';
 			}
