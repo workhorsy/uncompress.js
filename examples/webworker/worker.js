@@ -3,6 +3,7 @@
 // https://github.com/workhorsy/uncompress.js
 "use strict";
 
+importScripts("polyfill.js");
 importScripts("../../js/libunrar.js");
 importScripts("../../js/jszip.js");
 importScripts("../../js/libuntar.js");
