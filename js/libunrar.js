@@ -285,10 +285,11 @@ var readRARFileNames = function(data, password) {
 	}
 	_RARCloseArchive(handle);
 	handle = null;
-
+	/*
 	for (var i=0; i<entries.length; ++i) {
 		console.info('!!!!!!!!!! ' + entries[i].name);
 	}
+	*/
 	return entries;
 }
 
