@@ -4,11 +4,18 @@
 
 "use strict";
 
-/*
-importScripts('libunrar.js');
-importScripts('jszip.js');
-importScripts('libuntar.js');
-*/
+// Polyfill for missing array slice method (IE 11)
+if (typeof Uint8Array !== 'undefined') {
+if (! Uint8Array.prototype.slice) {
+	Uint8Array.prototype.slice = function(start, length) {
+		var retval = new Array();
+		for (var i=start; i<start+length; ++i) {
+			retval[i] = this[i];
+		}
+		return retval;
+	}
+}
+}
 
 function archiveOpen(file_name, array_buffer) {
 	// Get the archive type
