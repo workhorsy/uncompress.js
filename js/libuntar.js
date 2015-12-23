@@ -7,6 +7,15 @@
 // Based on the information from:
 // https://en.wikipedia.org/wiki/Tar_(computing)
 
+var g_scope = null;
+if (typeof window === 'object') {
+	g_scope = window;
+} else if (typeof importScripts === 'function') {
+	g_scope = this;
+}
+
+(function() {
+
 var TAR_TYPE_FILE = 0;
 var TAR_TYPE_DIR = 5;
 
@@ -72,3 +81,9 @@ function tarGetEntryData(entry, array_buffer) {
 	var entry_data = _tarRead(view, offset + TAR_HEADER_SIZE, size);
 	return entry_data;
 }
+
+// Set exports
+g_scope.tarGetEntries = tarGetEntries;
+g_scope.tarGetEntryData = tarGetEntryData;
+g_scope = null;
+})();

@@ -4,6 +4,15 @@
 
 "use strict";
 
+var g_scope = null;
+if (typeof window === 'object') {
+	g_scope = window;
+} else if (typeof importScripts === 'function') {
+	g_scope = this;
+}
+
+(function() {
+
 // Polyfill for missing array slice method (IE 11)
 if (typeof Uint8Array !== 'undefined') {
 if (! Uint8Array.prototype.slice) {
@@ -268,3 +277,14 @@ function isTarFile(array_buffer) {
 	var header = saneJoin(saneMap(new Uint8Array(array_buffer).slice(257, 257 + 5), String.fromCharCode), ', ');
 	return (header === tar_header);
 }
+
+// Set exports
+g_scope.archiveOpen = archiveOpen;
+g_scope.archiveClose = archiveClose;
+g_scope.isRarFile = isRarFile;
+g_scope.isZipFile = isZipFile;
+g_scope.isTarFile = isTarFile;
+g_scope.saneJoin = saneJoin;
+g_scope.saneMap = saneMap;
+g_scope = null;
+})();
