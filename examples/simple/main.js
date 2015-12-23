@@ -61,7 +61,6 @@ function onEach(archive, i) {
 			// Convert the data into an Object URL
 			var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 			var url = URL.createObjectURL(blob);
-			console.info(url);
 
 			// Add a BR to the document
 			entryList.appendChild(document.createElement('br'));
