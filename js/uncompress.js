@@ -7,14 +7,37 @@
 // Polyfill for missing array slice method (IE 11)
 if (typeof Uint8Array !== 'undefined') {
 if (! Uint8Array.prototype.slice) {
-	Uint8Array.prototype.slice = function(start, length) {
-		var retval = new Array();
-		for (var i=start; i<start+length; ++i) {
-			retval[i] = this[i];
+	Uint8Array.prototype.slice = function(start, end) {
+		var retval = new Uint8Array(end - start);
+		var j = 0;
+		for (var i=start; i<end; ++i) {
+			retval[j] = this[i];
+			j++;
 		}
 		return retval;
-	}
+	};
 }
+}
+
+// FIXME: This function is super inefficient
+function saneJoin(array, separator) {
+	var retval = '';
+	for (var i=0; i<array.length; ++i) {
+		if (i === 0) {
+			retval += array[i];
+		} else {
+			retval += separator + array[i];
+		}
+	}
+	return retval;
+}
+
+function saneMap(array, cb) {
+	var retval = new Array(array.length);
+	for (var i=0; i<retval.length; ++i) {
+		retval[i] = cb(array[i]);
+	}
+	return retval;
 }
 
 function archiveOpen(file_name, array_buffer) {
@@ -200,9 +223,9 @@ function isRarFile(array_buffer) {
 	}
 
 	// Return true if the header matches one of the RAR headers
-	var header1 = new Uint8Array(array_buffer).slice(0, 4).join(', ');
-	var header2 = new Uint8Array(array_buffer).slice(0, 7).join(', ');
-	var header3 = new Uint8Array(array_buffer).slice(0, 8).join(', ');
+	var header1 = saneJoin(new Uint8Array(array_buffer).slice(0, 4), ', ');
+	var header2 = saneJoin(new Uint8Array(array_buffer).slice(0, 7), ', ');
+	var header3 = saneJoin(new Uint8Array(array_buffer).slice(0, 8), ', ');
 	return (header1 === rar_header1 || header2 === rar_header2 || header3 === rar_header3);
 }
 
@@ -216,7 +239,7 @@ function isZipFile(array_buffer) {
 	}
 
 	// Return true if the header matches the ZIP header
-	var header = new Uint8Array(array_buffer).slice(0, 4).join(', ');
+	var header = saneJoin(new Uint8Array(array_buffer).slice(0, 4), ', ');
 	return (header === zip_header);
 }
 
@@ -230,6 +253,6 @@ function isTarFile(array_buffer) {
 	}
 
 	// Return true if the header matches the TAR header
-	var header = _workingMap(new Uint8Array(array_buffer).slice(257, 257 + 5), String.fromCharCode).join(', ');
+	var header = saneMap(new Uint8Array(array_buffer).slice(257, 257 + 5), String.fromCharCode).join(', ');
 	return (header === tar_header);
 }

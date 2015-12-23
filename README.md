@@ -6,7 +6,6 @@ Uncompress ZIP, RAR, and TAR files with pure JavaScript
 * For Zip it uses https://github.com/Stuk/jszip (MIT License)
 
 # Bugs
-* Untar silently fails on IE 11
 * Add the most trivial example possible
 * Untar assumes there are no directories in the archive.
 

@@ -7,14 +7,6 @@
 // Based on the information from:
 // https://en.wikipedia.org/wiki/Tar_(computing)
 
-function _workingMap(array, cb) {
-	var retval = new Array(array.length);
-	for (var i=0; i<retval.length; ++i) {
-		retval[i] = cb(array[i]);
-	}
-	return retval;
-}
-
 function tarGetEntries(filename, array_buffer) {
 	var view = new Uint8Array(array_buffer);
 	var offset = 0;
@@ -22,7 +14,7 @@ function tarGetEntries(filename, array_buffer) {
 
 	while (offset + 512 < view.byteLength) {
 		// Get entry name
-		var entry_name = _workingMap(view.slice(offset + 0, offset + 0 + 100), String.fromCharCode);
+		var entry_name = saneMap(view.slice(offset + 0, offset + 0 + 100), String.fromCharCode);
 		entry_name = entry_name.join('').replace(/\0/g, '');
 
 		// No entry name, so probably the last block
@@ -31,7 +23,7 @@ function tarGetEntries(filename, array_buffer) {
 		}
 
 		// Get entry length
-		var entry_length = parseInt(_workingMap(view.slice(offset + 124, offset + 124 + 12), String.fromCharCode).join(''), 8);
+		var entry_length = parseInt(saneMap(view.slice(offset + 124, offset + 124 + 12), String.fromCharCode).join(''), 8);
 
 		// Save this as en entry
 		var entry = {
