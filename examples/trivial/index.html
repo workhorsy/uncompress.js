@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>uncompress.js</title>
+		<script src="../../js/libunrar.js"></script>
+		<script src="../../js/jszip.js"></script>
+		<script src="../../js/libuntar.js"></script>
+		<script src="../../js/uncompress.js"></script>
+		<script src="main.js"></script>
+	</head>
+	<body>
+		<h1>Read an archive meta data</h1>
+
+		<div>
+			<input id="fileInput" type="file" required="required" />
+
+			<p>
+				This will list all entry data when loaded
+			</p>
+			<div id="entryList"></div>
+
+			<p>
+				Try it on these archives that contain images:
+				<ul>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.rar?raw=true">example.rar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.tar?raw=true">example.tar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.zip?raw=true">example.zip</a></li>
+				</ul>
+			</p>
+		</div>
+	</body>
+</html>
