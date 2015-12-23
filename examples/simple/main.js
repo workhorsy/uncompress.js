@@ -51,12 +51,14 @@ function toFriendlySize(size) {
 }
 
 function onClick(entry) {
+	var img = document.getElementById('currentImage');
+	img.src = '';
+
 	entry.readData(function(data) {
 		// Convert the data into an Object URL
 		var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 		var url = URL.createObjectURL(blob);
 
-		var img = document.getElementById('currentImage');
 		img.src = url;
 		img.onload = function() {
 			URL.revokeObjectURL(url);
