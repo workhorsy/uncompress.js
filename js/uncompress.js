@@ -148,11 +148,13 @@ function _rarGetEntries(rar_handle) {
 			is_file: info[i].is_file,
 			size: info[i].size,
 			readData: function(cb) {
-				if (is_file) {
-					readRARContent(rar_handle.rar_files, rar_handle.password, name, cb);
-				} else {
-					cb(null);
-				}
+				setTimeout(function() {
+					if (is_file) {
+							readRARContent(rar_handle.rar_files, rar_handle.password, name, cb);
+					} else {
+						cb(null);
+					}
+				}, 0);
 			}
 		});
 	});
@@ -176,12 +178,14 @@ function _zipGetEntries(zip_handle) {
 			is_file: is_file,
 			size: size,
 			readData: function(cb) {
-				if (is_file) {
-					var data = zip_entry.asArrayBuffer();
-					cb(data);
-				} else {
-					cb(null);
-				}
+				setTimeout(function() {
+					if (is_file) {
+						var data = zip_entry.asArrayBuffer();
+						cb(data);
+					} else {
+						cb(null);
+					}
+				}, 0);
 			}
 		});
 	});
@@ -204,12 +208,14 @@ function _tarGetEntries(tar_handle) {
 			is_file: is_file,
 			size: size,
 			readData: function(cb) {
-				if (is_file) {
-					var data = tarGetEntryData(entry, tar_handle.array_buffer);
-					cb(data.buffer);
-				} else {
-					cb(null);
-				}
+				setTimeout(function() {
+					if (is_file) {
+						var data = tarGetEntryData(entry, tar_handle.array_buffer);
+						cb(data.buffer);
+					} else {
+						cb(null);
+					}
+				}, 0);
 			}
 		});
 	});

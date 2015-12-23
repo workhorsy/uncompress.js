@@ -71,10 +71,7 @@ function onUncompress(archive) {
 				self.postMessage(message);
 			}
 
-			// FIXME: Change readData so it uses setTimeout internally with rar
-			setTimeout(function() {
-				onEach(i + 1);
-			}, 0);
+			onEach(i + 1);
 		});
 	};
 	onEach(0);

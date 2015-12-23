@@ -8,18 +8,19 @@ window.onload = function() {
 
 	function onArchiveLoaded(archive) {
 		archive.entries.forEach(function(entry) {
-			entryList.innerHTML +=
-			'<b>Name:</b> ' + entry.name + '<br />' +
-			'<b>Size:</b> ' + entry.size + '<br />' +
-			'<b>Is File:</b> ' + entry.is_file + '<br />';
+			if (! entry.is_file) return;
 
-			if (entry.is_file) {
-				entry.readData(function(data) {
-					var url = URL.createObjectURL(new Blob([data]));
-					entryList.innerHTML += '<a href="' + url + '">download</a>' + '<br />';
-				});
-			}
-			entryList.innerHTML += '<hr />';
+			entry.readData(function(data) {
+				entryList.innerHTML +=
+				'<b>Name:</b> ' + entry.name + '<br />' +
+				'<b>Size:</b> ' + entry.size + '<br />' +
+				'<b>Is File:</b> ' + entry.is_file + '<br />';
+
+				var url = URL.createObjectURL(new Blob([data]));
+				entryList.innerHTML += '<a href="' + url + '">download</a>' + '<br />';
+
+				entryList.innerHTML += '<hr />';
+			});
 		});
 	}
 
