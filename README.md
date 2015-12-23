@@ -7,7 +7,6 @@ Uncompress ZIP, RAR, and TAR files with pure JavaScript
 
 # Bugs
 * Add the most trivial example possible
-* Untar assumes there are no directories in the archive.
 
 # Bugs and Corrections
 Please report a Bug if you suspect any of this information is wrong.

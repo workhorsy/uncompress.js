@@ -24,14 +24,18 @@ function tarGetEntries(filename, array_buffer) {
 
 		// Get entry length
 		var entry_length = parseInt(saneJoin(saneMap(view.slice(offset + 124, offset + 124 + 12), String.fromCharCode), ''), 8);
+		var entry_type = saneMap(view.slice(offset + 156, offset + 156 + 1), String.fromCharCode) | 0;
 
-		// Save this as en entry
-		var entry = {
-			name: entry_name,
-			length: entry_length,
-			offset: offset
-		};
-		entries.push(entry);
+		// Save this as en entry if it is a file or directory
+		if (entry_type === 0 || entry_type === 5) {
+			var entry = {
+				name: entry_name,
+				length: entry_length,
+				is_file: entry_type == 0,
+				offset: offset
+			};
+			entries.push(entry);
+		}
 
 		// Round the offset up to be divisible by 512
 		offset += (entry_length + 512);

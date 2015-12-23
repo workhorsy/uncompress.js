@@ -192,10 +192,11 @@ function _tarGetEntries(tar_handle) {
 	// Get all the entries
 	var entries = [];
 	tar_entries.forEach(function(entry) {
-		var is_file = true;
+		var name = entry.name;
+		var is_file = entry.is_file;
 
 		entries.push({
-			name: entry.name,
+			name: name,
 			is_file: is_file,
 			readData: function(cb) {
 				if (is_file) {
