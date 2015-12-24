@@ -84,8 +84,8 @@ self.addEventListener('message', function(e) {
 			var array_buffer = e.data.array_buffer;
 			var file_name = e.data.file_name;
 
-			// Open the file as an archive
-			var archive = archiveOpen(file_name, array_buffer);
+			// Open the array buffer as an archive
+			var archive = archiveOpenArrayBuffer(file_name, array_buffer);
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 				onUncompress(archive);

@@ -31,18 +31,11 @@ window.onload = function() {
 			return;
 		}
 
-		// Get the file's info
+		// Get the selected file
 		var file = fileInput.files[0];
-		var blob = file.slice();
-		var file_name = file.name;
 
-		// Convert the blob into an array buffer
-		var reader = new FileReader();
-		reader.onload = function(evt) {
-			var array_buffer = reader.result;
-
-			// Open the file as an archive
-			var archive = archiveOpen(file_name, array_buffer);
+		// Open the file as an archive
+		archiveOpenFile(file, function(archive) {
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 				entryList.innerHTML = '';
@@ -50,7 +43,6 @@ window.onload = function() {
 			} else {
 				entryList.innerHTML = 'Failed to uncompress file';
 			}
-		};
-		reader.readAsArrayBuffer(blob);
+		});
 	};
 };

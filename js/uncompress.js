@@ -49,7 +49,24 @@ function saneMap(array, cb) {
 	return retval;
 }
 
-function archiveOpen(file_name, array_buffer) {
+function archiveOpenFile(file, cb) {
+	// Get the file's info
+	var blob = file.slice();
+	var file_name = file.name;
+
+	// Convert the blob into an array buffer
+	var reader = new FileReader();
+	reader.onload = function(evt) {
+		var array_buffer = reader.result;
+
+		// Open the file as an archive
+		var archive = archiveOpenArrayBuffer(file_name, array_buffer);
+		cb(archive);
+	};
+	reader.readAsArrayBuffer(blob);
+}
+
+function archiveOpenArrayBuffer(file_name, array_buffer) {
 	// Get the archive type
 	var archive_type = null;
 	if (isRarFile(array_buffer)) {
@@ -279,7 +296,8 @@ function isTarFile(array_buffer) {
 }
 
 // Set exports
-g_scope.archiveOpen = archiveOpen;
+g_scope.archiveOpenFile = archiveOpenFile;
+g_scope.archiveOpenArrayBuffer = archiveOpenArrayBuffer;
 g_scope.archiveClose = archiveClose;
 g_scope.isRarFile = isRarFile;
 g_scope.isZipFile = isZipFile;
