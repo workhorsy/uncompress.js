@@ -4,12 +4,49 @@
 
 "use strict";
 
-var g_scope = null;
-if (typeof window === 'object') {
-	g_scope = window;
-} else if (typeof importScripts === 'function') {
-	g_scope = this;
+
+function loadScript(url) {
+	// Window
+	if (typeof window === 'object') {
+		var script = document.createElement('script');
+		script.type = "text/javascript";
+		script.src = url;
+		document.head.appendChild(script);
+	// Web Worker
+	} else if (typeof importScripts === 'function') {
+		importScripts(url);
+	}
 }
+
+function currentScriptPath() {
+	// NOTE: document.currentScript does not work in a Web Worker
+	// So we have to parse a stack trace maually
+	try {
+		throw new Error('');
+	} catch(e) {
+		var stack = e.stack;
+		var line = null;
+
+		// Chrome and IE
+		if (stack.indexOf('@') !== -1) {
+			line = stack.split('@')[1].split('\n')[0];
+		// Firefox
+		} else {
+			line = stack.split('(')[1].split(')')[0];
+		}
+		line = line.substring(0, line.lastIndexOf('/')) + '/';
+		return line;
+	}
+}
+
+// Get the path of the current script
+var path = currentScriptPath();
+
+// Load the libraries
+var unrarMemoryFileLocation = path + 'libunrar.js.mem';
+loadScript(path + 'libunrar.js');
+loadScript(path + 'jszip.js');
+loadScript(path + 'libuntar.js');
 
 (function() {
 
@@ -295,14 +332,21 @@ function isTarFile(array_buffer) {
 	return (header === tar_header);
 }
 
+// Figure out if we are running in a Window or Web Worker
+var scope = null;
+if (typeof window === 'object') {
+	scope = window;
+} else if (typeof importScripts === 'function') {
+	scope = self;
+}
+
 // Set exports
-g_scope.archiveOpenFile = archiveOpenFile;
-g_scope.archiveOpenArrayBuffer = archiveOpenArrayBuffer;
-g_scope.archiveClose = archiveClose;
-g_scope.isRarFile = isRarFile;
-g_scope.isZipFile = isZipFile;
-g_scope.isTarFile = isTarFile;
-g_scope.saneJoin = saneJoin;
-g_scope.saneMap = saneMap;
-g_scope = null;
+scope.archiveOpenFile = archiveOpenFile;
+scope.archiveOpenArrayBuffer = archiveOpenArrayBuffer;
+scope.archiveClose = archiveClose;
+scope.isRarFile = isRarFile;
+scope.isZipFile = isZipFile;
+scope.isTarFile = isTarFile;
+scope.saneJoin = saneJoin;
+scope.saneMap = saneMap;
 })();

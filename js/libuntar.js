@@ -7,12 +7,6 @@
 // Based on the information from:
 // https://en.wikipedia.org/wiki/Tar_(computing)
 
-var g_scope = null;
-if (typeof window === 'object') {
-	g_scope = window;
-} else if (typeof importScripts === 'function') {
-	g_scope = this;
-}
 
 (function() {
 
@@ -82,8 +76,15 @@ function tarGetEntryData(entry, array_buffer) {
 	return entry_data;
 }
 
+// Figure out if we are running in a Window or Web Worker
+var scope = null;
+if (typeof window === 'object') {
+	scope = window;
+} else if (typeof importScripts === 'function') {
+	scope = self;
+}
+
 // Set exports
-g_scope.tarGetEntries = tarGetEntries;
-g_scope.tarGetEntryData = tarGetEntryData;
-g_scope = null;
+scope.tarGetEntries = tarGetEntries;
+scope.tarGetEntryData = tarGetEntryData;
 })();

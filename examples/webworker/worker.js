@@ -4,9 +4,6 @@
 "use strict";
 
 importScripts("polyfill.js");
-importScripts("../../js/libunrar.js");
-importScripts("../../js/jszip.js");
-importScripts("../../js/libuntar.js");
 importScripts("../../js/uncompress.js");
 
 
