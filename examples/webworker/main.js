@@ -37,12 +37,11 @@ window.onload = function() {
 
 				// Add a link to the Object URL
 				var a = document.createElement('a');
-				a.href = url;
+				a.href = '#' + file_name;
 				a.innerHTML = file_name + ' (' + toFriendlySize(size) + ')';
 				a.addEventListener('click', function(e) {
-					e.preventDefault();
 					var img = document.getElementById('currentImage');
-					img.src = this.href;
+					img.src = url;
 				});
 
 				entryList.appendChild(a);
@@ -62,6 +61,10 @@ window.onload = function() {
 			return;
 		}
 		entryList.innerHTML = '';
+
+		// Remove any loaded image
+		window.location.hash = '';
+		document.getElementById('currentImage').src = '';
 
 		// Get the file's info
 		var file = file_input.files[0];

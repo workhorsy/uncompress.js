@@ -84,12 +84,11 @@ function createLinkForEachEntry(archive) {
 			// Add a link to the Object URL
 			var a = document.createElement('a');
 			a.innerHTML = entry.name + ' (' + toFriendlySize(entry.size) + ')';
-			a.href = entry.name;
+			a.href = '#' + entry.name;
 
 			// Uncompress the entry when the link is clicked on
 			a.addEventListener('click', function(e) {
 				console.info('clicked .................');
-				e.preventDefault();
 				onClick(entry);
 			});
 
@@ -110,6 +109,10 @@ window.onload = function() {
 			entryList.innerHTML = 'No file selected';
 			return;
 		}
+
+		// Remove any loaded image
+		window.location.hash = '';
+		document.getElementById('currentImage').src = '';
 
 		// Get the file's info
 		var file = file_input.files[0];
