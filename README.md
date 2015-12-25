@@ -7,6 +7,7 @@ Uncompress ZIP, RAR, and TAR files with pure JavaScript
 * For Tar it uses its own libuntar.js file (MIT License)
 
 # TODO
+* Rename to decompress.js
 * Only import the libraries that will be used
 * Add the entry size before and after compression
 
