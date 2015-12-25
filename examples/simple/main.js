@@ -100,6 +100,9 @@ function createLinkForEachEntry(archive) {
 }
 
 window.onload = function() {
+	// Load all the archive formats
+	loadArchiveFormats(['rar', 'zip', 'tar']);
+
 	entryList = document.getElementById('entryList');
 
 	document.getElementById('fileInput').onchange = function() {

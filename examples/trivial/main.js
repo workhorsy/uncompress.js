@@ -3,6 +3,9 @@
 // https://github.com/workhorsy/uncompress.js
 
 window.onload = function() {
+	// Load all the archive formats
+	loadArchiveFormats(['rar', 'zip', 'tar']);
+
 	var fileInput = document.getElementById('fileInput');
 	var entryList = document.getElementById('entryList');
 

@@ -39,16 +39,12 @@ function currentScriptPath() {
 	}
 }
 
-// Get the path of the current script
-var path = currentScriptPath();
-
-// Load the libraries
-var unrarMemoryFileLocation = path + 'libunrar.js.mem';
-loadScript(path + 'libunrar.js');
-loadScript(path + 'jszip.js');
-loadScript(path + 'libuntar.js');
+// This is used by libunrar.js to load libunrar.js.mem
+var unrarMemoryFileLocation = null;
 
 (function() {
+
+var _loaded_archive_formats = [];
 
 // Polyfill for missing array slice method (IE 11)
 if (typeof Uint8Array !== 'undefined') {
@@ -86,6 +82,38 @@ function saneMap(array, cb) {
 	return retval;
 }
 
+function loadArchiveFormats(formats) {
+	// Get the path of the current script
+	var path = currentScriptPath();
+
+	// Load the formats
+	formats.forEach(function(archive_format) {
+		// Skip this format if it is already loaded
+		if (_loaded_archive_formats.indexOf(archive_format) !== -1) {
+			return;
+		}
+
+		// Load the archive format
+		switch (archive_format) {
+			case 'rar':
+				unrarMemoryFileLocation = path + 'libunrar.js.mem';
+				loadScript(path + 'libunrar.js');
+				_loaded_archive_formats.push(archive_format);
+				break;
+			case 'zip':
+				loadScript(path + 'jszip.js');
+				_loaded_archive_formats.push(archive_format);
+				break;
+			case 'tar':
+				loadScript(path + 'libuntar.js');
+				_loaded_archive_formats.push(archive_format);
+				break;
+			default:
+				throw new Error("Unknown archive format '" + archive_format + "'.");
+		}
+	});
+}
+
 function archiveOpenFile(file, cb) {
 	// Get the file's info
 	var blob = file.slice();
@@ -114,6 +142,11 @@ function archiveOpenArrayBuffer(file_name, array_buffer) {
 		archive_type = 'tar';
 	} else {
 		return null;
+	}
+
+	// Make sure the archive format is loaded
+	if (_loaded_archive_formats.indexOf(archive_type) === -1) {
+		throw new Error("The archive format '" + archive_type + "' is not loaded.");
 	}
 
 	// Get the entries
@@ -341,6 +374,7 @@ if (typeof window === 'object') {
 }
 
 // Set exports
+scope.loadArchiveFormats = loadArchiveFormats;
 scope.archiveOpenFile = archiveOpenFile;
 scope.archiveOpenArrayBuffer = archiveOpenArrayBuffer;
 scope.archiveClose = archiveClose;

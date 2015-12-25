@@ -8,7 +8,6 @@ Uncompress ZIP, RAR, and TAR files with pure JavaScript
 
 # TODO
 * Rename to decompress.js
-* Only import the libraries that will be used
 * Add the entry size before and after compression
 
 # Bugs and Corrections
