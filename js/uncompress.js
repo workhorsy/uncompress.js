@@ -108,6 +108,10 @@ function loadArchiveFormats(formats) {
 				loadScript(path + 'libuntar.js');
 				_loaded_archive_formats.push(archive_format);
 				break;
+			case '7zip':
+				// FIXME: Add 7zip import
+				_loaded_archive_formats.push(archive_format);
+				break;
 			default:
 				throw new Error("Unknown archive format '" + archive_format + "'.");
 		}
@@ -131,8 +135,14 @@ function archiveOpenFile(file, cb) {
 	reader.readAsArrayBuffer(blob);
 }
 
+function _7zipOpen(file_name, array_buffer) {
+	console.info(file_name);
+	console.info(array_buffer);
+}
+
 function archiveOpenArrayBuffer(file_name, array_buffer) {
 	// Get the archive type
+	// FIXME: rename archive_type to archive_format
 	var archive_type = null;
 	if (isRarFile(array_buffer)) {
 		archive_type = 'rar';
@@ -140,6 +150,8 @@ function archiveOpenArrayBuffer(file_name, array_buffer) {
 		archive_type = 'zip';
 	} else if(isTarFile(array_buffer)) {
 		archive_type = 'tar';
+	} else if(is7zipFile(array_buffer)) {
+		archive_type = '7zip';
 	} else {
 		return null;
 	}
@@ -164,6 +176,10 @@ function archiveOpenArrayBuffer(file_name, array_buffer) {
 		case 'tar':
 			handle = _tarOpen(file_name, array_buffer);
 			entries = _tarGetEntries(handle);
+		case '7zip':
+			handle = _7zipOpen(file_name, array_buffer);
+//			entries = _7zipGetEntries(handle);
+			throw new Error('add 7zip code here');
 			break;
 	}
 
@@ -365,6 +381,21 @@ function isTarFile(array_buffer) {
 	return (header === tar_header);
 }
 
+function is7zipFile(array_buffer) {
+	// The 7zip header
+	// '7' 'z' BC AF 27 1C
+	var seven_zip_header = saneJoin(saneMap([0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C], String.fromCharCode), ', ');
+
+	// Just return false if the file is smaller than the header size
+	if (array_buffer.byteLength < 7) {
+		return false;
+	}
+
+	// Return true if the header matches the 7zip header
+	var header = saneJoin(saneMap(new Uint8Array(array_buffer).slice(0, 6), String.fromCharCode), ', ');
+	return (header === seven_zip_header);
+}
+
 // Figure out if we are running in a Window or Web Worker
 var scope = null;
 if (typeof window === 'object') {
@@ -381,6 +412,7 @@ scope.archiveClose = archiveClose;
 scope.isRarFile = isRarFile;
 scope.isZipFile = isZipFile;
 scope.isTarFile = isTarFile;
+scope.is7zipFile = is7zipFile;
 scope.saneJoin = saneJoin;
 scope.saneMap = saneMap;
 })();

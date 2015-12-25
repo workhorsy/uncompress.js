@@ -4,7 +4,7 @@
 
 window.onload = function() {
 	// Load all the archive formats
-	loadArchiveFormats(['rar', 'zip', 'tar']);
+	loadArchiveFormats(['rar', 'zip', 'tar', '7zip']);
 
 	var fileInput = document.getElementById('fileInput');
 	var entryList = document.getElementById('entryList');
