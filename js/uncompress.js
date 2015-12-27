@@ -125,8 +125,12 @@ function archiveOpenFile(file, cb) {
 		var array_buffer = reader.result;
 
 		// Open the file as an archive
-		var archive = archiveOpenArrayBuffer(file_name, array_buffer);
-		cb(archive);
+		try {
+			var archive = archiveOpenArrayBuffer(file_name, array_buffer);
+			cb(archive, null);
+		} catch(e) {
+			cb(null, e);
+		}
 	};
 	reader.readAsArrayBuffer(blob);
 }
@@ -141,7 +145,7 @@ function archiveOpenArrayBuffer(file_name, array_buffer) {
 	} else if(isTarFile(array_buffer)) {
 		archive_type = 'tar';
 	} else {
-		return null;
+		throw new Error("The archive type is unknown");
 	}
 
 	// Make sure the archive format is loaded
@@ -152,19 +156,23 @@ function archiveOpenArrayBuffer(file_name, array_buffer) {
 	// Get the entries
 	var handle = null;
 	var entries = [];
-	switch (archive_type) {
-		case 'rar':
-			handle = _rarOpen(file_name, array_buffer);
-			entries = _rarGetEntries(handle);
-			break;
-		case 'zip':
-			handle = _zipOpen(file_name, array_buffer);
-			entries = _zipGetEntries(handle);
-			break;
-		case 'tar':
-			handle = _tarOpen(file_name, array_buffer);
-			entries = _tarGetEntries(handle);
-			break;
+	try {
+		switch (archive_type) {
+			case 'rar':
+				handle = _rarOpen(file_name, array_buffer);
+				entries = _rarGetEntries(handle);
+				break;
+			case 'zip':
+				handle = _zipOpen(file_name, array_buffer);
+				entries = _zipGetEntries(handle);
+				break;
+			case 'tar':
+				handle = _tarOpen(file_name, array_buffer);
+				entries = _tarGetEntries(handle);
+				break;
+		}
+	} catch(e) {
+		throw new Error("Failed to open '" + archive_type + "' archive.");
 	}
 
 	// Sort the entries by name

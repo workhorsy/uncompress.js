@@ -47,7 +47,7 @@ window.onload = function() {
 				entryList.appendChild(a);
 				break;
 			case 'invalid_file':
-				entryList.innerHTML = e.data.error;
+				entryList.innerHTML = '<span style="color: red">' + e.data.error + '</span>';
 				break;
 		}
 	};

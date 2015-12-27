@@ -121,14 +121,14 @@ window.onload = function() {
 		var file = file_input.files[0];
 
 		// Open the file as an archive
-		archiveOpenFile(file, function(archive) {
+		archiveOpenFile(file, function(archive, err) {
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 				entryList.innerHTML = '';
 				document.getElementById('currentImage').src = '';
 				createLinkForEachEntry(archive);
 			} else {
-				entryList.innerHTML = 'Failed to uncompress file';
+				entryList.innerHTML = '<span style="color: red">' + err + '</span>';
 			}
 		});
 	};
