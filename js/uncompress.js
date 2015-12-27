@@ -135,9 +135,34 @@ function archiveOpenFile(file, cb) {
 	reader.readAsArrayBuffer(blob);
 }
 
+function to_u32(array) {
+	return new Uint32Array(array.buffer)[0];
+}
+
 function _7zipOpen(file_name, array_buffer) {
 	console.info(file_name);
-	console.info(array_buffer);
+
+	var view = new Uint8Array(array_buffer);
+	//console.info(view);
+
+	var header = saneJoin(saneMap(view.slice(0, 6), String.fromCharCode), ', ');
+	console.info('header: ' + header);
+
+	var major = view.slice(6, 7)[0];
+	var minor = view.slice(7, 8)[0];
+	console.info('version: ' + major + ', ' + minor);
+
+	var start_header_crc = to_u32(view.slice(8, 8 + 4));
+	console.info('start_header_crc: ' + start_header_crc);
+
+	var next_header_offset = to_u32(view.slice(12, 12 + 8)); // will truncate to 32 bits
+	console.info('next_header_offset: ' + next_header_offset);
+
+	var next_header_size = to_u32(view.slice(20, 20 + 8)); // will truncate to 32 bits
+	console.info('next_header_size: ' + next_header_size);
+
+	var next_header_crc = to_u32(view.slice(28, 28 + 4));
+	console.info('next_header_crc: ' + next_header_crc);
 }
 
 function archiveOpenArrayBuffer(file_name, array_buffer) {
