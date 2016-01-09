@@ -54,7 +54,7 @@ function onClick(entry) {
 	var img = document.getElementById('currentImage');
 	img.src = '';
 
-	entry.readData(function(data) {
+	entry.readData(function(data, err) {
 		// Convert the data into an Object URL
 		var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 		var url = URL.createObjectURL(blob);

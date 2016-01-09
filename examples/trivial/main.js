@@ -13,7 +13,7 @@ window.onload = function() {
 		archive.entries.forEach(function(entry) {
 			if (! entry.is_file) return;
 
-			entry.readData(function(data) {
+			entry.readData(function(data, err) {
 				entryList.innerHTML +=
 				'<b>Name:</b> ' + entry.name + '<br />' +
 				'<b>Size:</b> ' + entry.size + '<br />' +

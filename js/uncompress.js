@@ -254,9 +254,13 @@ function _rarGetEntries(rar_handle) {
 			readData: function(cb) {
 				setTimeout(function() {
 					if (is_file) {
+						try {
 							readRARContent(rar_handle.rar_files, rar_handle.password, name, cb);
+						} catch (e) {
+							cb(null, e);
+						}
 					} else {
-						cb(null);
+						cb(null, null);
 					}
 				}, 0);
 			}
@@ -285,9 +289,9 @@ function _zipGetEntries(zip_handle) {
 				setTimeout(function() {
 					if (is_file) {
 						var data = zip_entry.asArrayBuffer();
-						cb(data);
+						cb(data, null);
 					} else {
-						cb(null);
+						cb(null, null);
 					}
 				}, 0);
 			}
@@ -315,9 +319,9 @@ function _tarGetEntries(tar_handle) {
 				setTimeout(function() {
 					if (is_file) {
 						var data = tarGetEntryData(entry, tar_handle.array_buffer);
-						cb(data.buffer);
+						cb(data.buffer, null);
 					} else {
-						cb(null);
+						cb(null, null);
 					}
 				}, 0);
 			}

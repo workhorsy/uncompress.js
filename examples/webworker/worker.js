@@ -55,8 +55,8 @@ function onUncompress(archive) {
 		}
 
 		var entry = entries[i];
-		entry.readData(function(data) {
-			if (entry.is_file) {
+		entry.readData(function(data, err) {
+			if (entry.is_file && data) {
 				var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 				var url = URL.createObjectURL(blob);
 
