@@ -16,7 +16,8 @@ window.onload = function() {
 			entry.readData(function(data, err) {
 				entryList.innerHTML +=
 				'<b>Name:</b> ' + entry.name + '<br />' +
-				'<b>Size:</b> ' + entry.size + '<br />' +
+				'<b>Compressed Size:</b> ' + entry.size_compressed + '<br />' +
+				'<b>Uncompressed Size:</b> ' + entry.size_uncompressed + '<br />' +
 				'<b>Is File:</b> ' + entry.is_file + '<br />';
 
 				var url = URL.createObjectURL(new Blob([data]));

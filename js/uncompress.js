@@ -250,7 +250,8 @@ function _rarGetEntries(rar_handle) {
 		entries.push({
 			name: name,
 			is_file: info[i].is_file,
-			size: info[i].size,
+			size_compressed: info[i].size_compressed,
+			size_uncompressed: info[i].size_uncompressed,
 			readData: function(cb) {
 				setTimeout(function() {
 					if (is_file) {
@@ -279,12 +280,14 @@ function _zipGetEntries(zip_handle) {
 		var zip_entry = zip.files[i];
 		var name = zip_entry.name;
 		var is_file = ! zip_entry.dir;
-		var size = zip_entry._data ? zip_entry._data.uncompressedSize : 0;
+		var size_compressed = zip_entry._data ? zip_entry._data.compressedSize : 0;
+		var size_uncompressed = zip_entry._data ? zip_entry._data.uncompressedSize : 0;
 
 		entries.push({
 			name: name,
 			is_file: is_file,
-			size: size,
+			size_compressed: size_compressed,
+			size_uncompressed: size_uncompressed,
 			readData: function(cb) {
 				setTimeout(function() {
 					if (is_file) {
@@ -314,7 +317,8 @@ function _tarGetEntries(tar_handle) {
 		entries.push({
 			name: name,
 			is_file: is_file,
-			size: size,
+			size_compressed: size,
+			size_uncompressed: size,
 			readData: function(cb) {
 				setTimeout(function() {
 					if (is_file) {

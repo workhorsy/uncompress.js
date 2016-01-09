@@ -83,7 +83,7 @@ function createLinkForEachEntry(archive) {
 
 			// Add a link to the Object URL
 			var a = document.createElement('a');
-			a.innerHTML = entry.name + ' (' + toFriendlySize(entry.size) + ')';
+			a.innerHTML = entry.name + ' (' + toFriendlySize(entry.size_uncompressed) + ')';
 			a.href = '#' + entry.name;
 
 			// Uncompress the entry when the link is clicked on
