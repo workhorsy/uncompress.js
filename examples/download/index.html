@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>uncompress.js</title>
+		<script src="../../js/uncompress.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<h1>Read an archive after downloading</h1>
+
+		<div>
+			<button id="go" >Download and extract</button>
+			<br />
+			<input id="download_url" type="text" style="width: 600px" value="https://raw.githubusercontent.com/workhorsy/uncompress.js/master/example.rar" />
+
+			<p>
+				This will list all entry data:
+			</p>
+			<div id="entryList"></div>
+
+			<p>
+				Try it on these archives that contain images:
+				<ul>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.rar?raw=true">example.rar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.tar?raw=true">example.tar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.zip?raw=true">example.zip</a></li>
+				</ul>
+			</p>
+		</div>
+		<script src="main.js"></script>
+	</body>
+</html>
