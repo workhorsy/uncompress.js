@@ -1,6 +1,11 @@
-// Copyright (c) 2015 Matthew Brennan Jones <matthew.brennan.jones@gmail.com>
+// Copyright (c) 2017 Matthew Brennan Jones <matthew.brennan.jones@gmail.com>
 // This software is licensed under a MIT License
 // https://github.com/workhorsy/uncompress.js
+
+// Load all the archive formats
+// NOTE: This loads asynchronously, and will have to complete before the
+// library can be used. So this should be run when the program first starts.
+loadArchiveFormats(['rar', 'zip', 'tar']);
 
 var entryList = null;
 
@@ -100,9 +105,6 @@ function createLinkForEachEntry(archive) {
 }
 
 window.onload = function() {
-	// Load all the archive formats
-	loadArchiveFormats(['rar', 'zip', 'tar']);
-
 	entryList = document.getElementById('entryList');
 
 	document.getElementById('fileInput').onchange = function() {

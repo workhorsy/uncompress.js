@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Matthew Brennan Jones <matthew.brennan.jones@gmail.com>
+// Copyright (c) 2017 Matthew Brennan Jones <matthew.brennan.jones@gmail.com>
 // This software is licensed under a MIT License
 // https://github.com/workhorsy/uncompress.js
 
