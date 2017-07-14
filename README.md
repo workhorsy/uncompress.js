@@ -1,5 +1,6 @@
 # uncompress.js
 Uncompress ZIP, RAR, and TAR files with pure JavaScript
+
 Works in Firefox, Chrome, and IE
 
 # Uses projects:
