@@ -9,6 +9,7 @@ loadArchiveFormats(['rar', 'zip', 'tar']);
 
 window.onload = function() {
 	var fileInput = document.getElementById('fileInput');
+	var filePassword = document.getElementById('filePassword');
 	var entryList = document.getElementById('entryList');
 
 	function onArchiveLoaded(archive) {
@@ -40,8 +41,10 @@ window.onload = function() {
 		// Get the selected file
 		var file = fileInput.files[0];
 
+		var password = filePassword.value;
+
 		// Open the file as an archive
-		archiveOpenFile(file, function(archive, err) {
+		archiveOpenFile(file, password, function(archive, err) {
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 				entryList.innerHTML = '';
