@@ -51,6 +51,7 @@ function onArchiveLoaded(archive) {
 document.getElementById('go').addEventListener('click', function() {
 	var entryList = document.getElementById('entryList');
 	entryList.innerHTML = '';
+	var password = document.getElementById('filePassword').value;
 
 	var url = document.getElementById('download_url').value;
 	httpRequest(url, 'GET', function(response, status) {
@@ -60,7 +61,7 @@ document.getElementById('go').addEventListener('click', function() {
 				var array_buffer = this.result;
 
 				// Open the file as an archive
-				var archive = archiveOpenArrayBuffer("example.rar", array_buffer);
+				var archive = archiveOpenArrayBuffer("example.rar", password, array_buffer);
 				if (archive) {
 					console.info('Uncompressing ' + archive.archive_type + ' ...');
 					entryList.innerHTML = '';

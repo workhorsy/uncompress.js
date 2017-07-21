@@ -2,6 +2,5 @@
 
 TODO
 
-* Make it throw an error when the password fails
-* Make an example for just the password
+* Make passwords work with tar and zip
 * Add password protected tar and zip files

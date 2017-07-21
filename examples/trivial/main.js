@@ -11,12 +11,22 @@ window.onload = function() {
 	var fileInput = document.getElementById('fileInput');
 	var filePassword = document.getElementById('filePassword');
 	var entryList = document.getElementById('entryList');
+	var errorList = document.getElementById('errorList');
 
 	function onArchiveLoaded(archive) {
+		var is_error = false;
 		archive.entries.forEach(function(entry) {
 			if (! entry.is_file) return;
+			if (is_error) return false;
 
 			entry.readData(function(data, err) {
+				if (err) {
+					is_error = true;
+					errorList.innerHTML = err;
+					entryList.innerHTML = '';
+					return;
+				}
+
 				entryList.innerHTML +=
 				'<b>Name:</b> ' + entry.name + '<br />' +
 				'<b>Compressed Size:</b> ' + entry.size_compressed + '<br />' +

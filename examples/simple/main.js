@@ -56,10 +56,16 @@ function toFriendlySize(size) {
 }
 
 function onClick(entry) {
+	var errorList = document.getElementById('errorList');
 	var img = document.getElementById('currentImage');
 	img.src = '';
 
 	entry.readData(function(data, err) {
+		if (err) {
+			errorList.innerHTML = err;
+			return;
+		}
+
 		// Convert the data into an Object URL
 		var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 		var url = URL.createObjectURL(blob);
@@ -121,9 +127,10 @@ window.onload = function() {
 
 		// Get the file's info
 		var file = file_input.files[0];
+		var password = document.getElementById('filePassword').value;
 
 		// Open the file as an archive
-		archiveOpenFile(file, function(archive, err) {
+		archiveOpenFile(file, password, function(archive, err) {
 			if (archive) {
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 				entryList.innerHTML = '';

@@ -20,11 +20,17 @@
 		</div>
 
 		<div>
-			<input id="fileInput" type="file" required="required" />
+			<p>
+				<input id="fileInput" type="file" required="required" />
+			</p>
+			<p>
+				password: <input id="filePassword" type="password" />
+			</p>
 
 			<p>
 				This will uncompress all entries as soon as the archive is loaded
 			</p>
+			<div id="errorList" style="color: red;"></div>
 			<div id="entryList"></div>
 
 			<p>

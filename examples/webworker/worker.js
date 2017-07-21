@@ -56,6 +56,15 @@ function onUncompress(archive) {
 
 		var entry = entries[i];
 		entry.readData(function(data, err) {
+			if (err) {
+				var message = {
+					action: 'error',
+					error: err
+				};
+				self.postMessage(message);
+				return;
+			}
+
 			if (entry.is_file && data) {
 				var blob = new Blob([data], {type: getFileMimeType(entry.name)});
 				var url = URL.createObjectURL(blob);
@@ -82,16 +91,17 @@ self.addEventListener('message', function(e) {
 			// Get the file data
 			var array_buffer = e.data.array_buffer;
 			var file_name = e.data.file_name;
+			var password = e.data.password;
 
 			// Open the array buffer as an archive
 			try {
-				var archive = archiveOpenArrayBuffer(file_name, array_buffer);
+				var archive = archiveOpenArrayBuffer(file_name, password, array_buffer);
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 				onUncompress(archive);
 			// Otherwise show an error
 			} catch (e) {
 				var message = {
-					action: 'invalid_file',
+					action: 'error',
 					error: e.message
 				};
 				self.postMessage(message);

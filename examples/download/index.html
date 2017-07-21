@@ -10,12 +10,18 @@
 
 		<div>
 			<button id="go" >Download and extract</button>
-			<br />
-			<input id="download_url" type="text" style="width: 600px" value="https://raw.githubusercontent.com/workhorsy/uncompress.js/master/example.rar" />
+
+			<p>
+				<input id="download_url" type="text" style="width: 600px" value="https://raw.githubusercontent.com/workhorsy/uncompress.js/master/example.rar" />
+			</p>
+			<p>
+				password: <input id="filePassword" type="password" />
+			</p>
 
 			<p>
 				This will list all entry data:
 			</p>
+			<div id="errorList" style="color: red;"></div>
 			<div id="entryList"></div>
 
 			<p>
