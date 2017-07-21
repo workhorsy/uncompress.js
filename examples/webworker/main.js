@@ -46,7 +46,7 @@ window.onload = function() {
 
 				entryList.appendChild(a);
 				break;
-			case 'invalid_file':
+			case 'error':
 				entryList.innerHTML = '<span style="color: red">' + e.data.error + '</span>';
 				break;
 		}
@@ -70,6 +70,7 @@ window.onload = function() {
 		var file = file_input.files[0];
 		var blob = file.slice();
 		var file_name = file.name;
+		var password = document.getElementById('filePassword').value;
 
 		// Convert the blob into an array buffer
 		var reader = new FileReader();
@@ -80,7 +81,8 @@ window.onload = function() {
 			var message = {
 				action: 'uncompress_start',
 				file_name: file_name,
-				array_buffer: array_buffer
+				array_buffer: array_buffer,
+				password: password
 			};
 			worker.postMessage(message);
 		};

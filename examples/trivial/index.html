@@ -9,17 +9,23 @@
 		<h1>Read an archive meta data</h1>
 
 		<div>
-			<input id="fileInput" type="file" required="required" />
+			<p>
+				<input id="fileInput" type="file" required="required" />
+			</p>
+			<p>
+				password: <input id="filePassword" type="password" />
+			</p>
 
 			<p>
 				This will list all entry data when loaded
 			</p>
+			<div id="errorList" style="color: red;"></div>
 			<div id="entryList"></div>
 
 			<p>
 				Try it on these archives that contain images:
 				<ul>
-					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.rar?raw=true">example.rar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example_rar_5.rar?raw=true">example_rar_5.rar</a></li>
 					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.tar?raw=true">example.tar</a></li>
 					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.zip?raw=true">example.zip</a></li>
 				</ul>

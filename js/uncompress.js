@@ -114,10 +114,11 @@ function loadArchiveFormats(formats) {
 	});
 }
 
-function archiveOpenFile(file, cb) {
+function archiveOpenFile(file, password, cb) {
 	// Get the file's info
 	var blob = file.slice();
 	var file_name = file.name;
+	password = password || null;
 
 	// Convert the blob into an array buffer
 	var reader = new FileReader();
@@ -126,7 +127,7 @@ function archiveOpenFile(file, cb) {
 
 		// Open the file as an archive
 		try {
-			var archive = archiveOpenArrayBuffer(file_name, array_buffer);
+			var archive = archiveOpenArrayBuffer(file_name, password, array_buffer);
 			cb(archive, null);
 		} catch(e) {
 			cb(null, e);
@@ -135,7 +136,7 @@ function archiveOpenFile(file, cb) {
 	reader.readAsArrayBuffer(blob);
 }
 
-function archiveOpenArrayBuffer(file_name, array_buffer) {
+function archiveOpenArrayBuffer(file_name, password, array_buffer) {
 	// Get the archive type
 	var archive_type = null;
 	if (isRarFile(array_buffer)) {
@@ -159,15 +160,15 @@ function archiveOpenArrayBuffer(file_name, array_buffer) {
 	try {
 		switch (archive_type) {
 			case 'rar':
-				handle = _rarOpen(file_name, array_buffer);
+				handle = _rarOpen(file_name, password, array_buffer);
 				entries = _rarGetEntries(handle);
 				break;
 			case 'zip':
-				handle = _zipOpen(file_name, array_buffer);
+				handle = _zipOpen(file_name, password, array_buffer);
 				entries = _zipGetEntries(handle);
 				break;
 			case 'tar':
-				handle = _tarOpen(file_name, array_buffer);
+				handle = _tarOpen(file_name, password, array_buffer);
 				entries = _tarGetEntries(handle);
 				break;
 		}
@@ -200,7 +201,7 @@ function archiveClose(archive) {
 	archive.handle = null;
 }
 
-function _rarOpen(file_name, array_buffer) {
+function _rarOpen(file_name, password, array_buffer) {
 	// Create an array of rar files
 	var rar_files = [{
 		name: file_name,
@@ -213,29 +214,29 @@ function _rarOpen(file_name, array_buffer) {
 	return {
 		file_name: file_name,
 		array_buffer: array_buffer,
-		password: null,
+		password: password,
 		rar_files: rar_files
 	};
 }
 
-function _zipOpen(file_name, array_buffer) {
+function _zipOpen(file_name, password, array_buffer) {
 	var zip = new JSZip(array_buffer);
 
 	// Return zip handle
 	return {
 		file_name: file_name,
 		array_buffer: array_buffer,
-		password: null,
+		password: password,
 		zip: zip
 	};
 }
 
-function _tarOpen(file_name, array_buffer) {
+function _tarOpen(file_name, password, array_buffer) {
 	// Return tar handle
 	return {
 		file_name: file_name,
 		array_buffer: array_buffer,
-		password: null
+		password: password
 	};
 }
 
