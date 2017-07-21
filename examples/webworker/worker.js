@@ -7,7 +7,9 @@ importScripts("polyfill.js");
 importScripts("../../js/uncompress.js");
 
 // Load all the archive formats
-loadArchiveFormats(['rar', 'zip', 'tar']);
+loadArchiveFormats(['rar', 'zip', 'tar'], function() {
+	console.info("Worker ready ...");
+});
 
 // FIXME: This function is super inefficient
 function isValidImageType(file_name) {

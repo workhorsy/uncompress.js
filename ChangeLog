@@ -1,2 +1,3 @@
 * Release 0.1.0
 	* Fixed Bug #10: Add support for password protected RAR archives
+	* Fixed Bug #8: Change loadArchiveFormats to use a callback

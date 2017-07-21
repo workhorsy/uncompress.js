@@ -5,16 +5,20 @@
 "use strict";
 
 
-function loadScript(url) {
+function loadScript(url, cb) {
 	// Window
 	if (typeof window === 'object') {
 		var script = document.createElement('script');
 		script.type = "text/javascript";
 		script.src = url;
+		script.onload = function() {
+			if (cb) cb();
+		};
 		document.head.appendChild(script);
 	// Web Worker
 	} else if (typeof importScripts === 'function') {
 		importScripts(url);
+		if (cb) cb();
 	}
 }
 
@@ -41,6 +45,7 @@ function currentScriptPath() {
 
 // This is used by libunrar.js to load libunrar.js.mem
 var unrarMemoryFileLocation = null;
+var g_on_loaded_cb = null;
 
 (function() {
 
@@ -82,9 +87,28 @@ function saneMap(array, cb) {
 	return retval;
 }
 
-function loadArchiveFormats(formats) {
+function loadArchiveFormats(formats, cb) {
 	// Get the path of the current script
 	var path = currentScriptPath();
+	var load_counter = 0;
+
+	var checkForLoadDone = function() {
+		load_counter++;
+
+		// Get the total number of loads before we are done loading
+		// If loading RAR in a Window, have 1 extra load.
+		var load_total = formats.length;
+		if (formats.indexOf('rar') !== -1 && typeof window === 'object') {
+			load_total++;
+		}
+
+		// run the callback if the last script has loaded
+		if (load_counter === load_total) {
+			cb();
+		}
+	}
+
+	g_on_loaded_cb = checkForLoadDone;
 
 	// Load the formats
 	formats.forEach(function(archive_format) {
@@ -97,15 +121,15 @@ function loadArchiveFormats(formats) {
 		switch (archive_format) {
 			case 'rar':
 				unrarMemoryFileLocation = path + 'libunrar.js.mem';
-				loadScript(path + 'libunrar.js');
+				loadScript(path + 'libunrar.js', checkForLoadDone);
 				_loaded_archive_formats.push(archive_format);
 				break;
 			case 'zip':
-				loadScript(path + 'jszip.js');
+				loadScript(path + 'jszip.js', checkForLoadDone);
 				_loaded_archive_formats.push(archive_format);
 				break;
 			case 'tar':
-				loadScript(path + 'libuntar.js');
+				loadScript(path + 'libuntar.js', checkForLoadDone);
 				_loaded_archive_formats.push(archive_format);
 				break;
 			default:
