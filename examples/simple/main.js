@@ -2,10 +2,6 @@
 // This software is licensed under a MIT License
 // https://github.com/workhorsy/uncompress.js
 
-// Load all the archive formats
-// NOTE: This loads asynchronously, and will have to complete before the
-// library can be used. So this should be run when the program first starts.
-loadArchiveFormats(['rar', 'zip', 'tar']);
 
 var entryList = null;
 
@@ -110,13 +106,14 @@ function createLinkForEachEntry(archive) {
 	//archiveClose(archive);
 }
 
-window.onload = function() {
+// Load all the archive formats
+loadArchiveFormats(['rar', 'zip', 'tar'], function() {
 	entryList = document.getElementById('entryList');
+	var fileInput = document.getElementById('fileInput');
 
-	document.getElementById('fileInput').onchange = function() {
+	fileInput.onchange = function() {
 		// Just return if there is no file selected
-		var file_input = document.getElementById('fileInput');
-		if (file_input.files.length === 0) {
+		if (fileInput.files.length === 0) {
 			entryList.innerHTML = 'No file selected';
 			return;
 		}
@@ -126,7 +123,7 @@ window.onload = function() {
 		document.getElementById('currentImage').src = '';
 
 		// Get the file's info
-		var file = file_input.files[0];
+		var file = fileInput.files[0];
 		var password = document.getElementById('filePassword').value;
 
 		// Open the file as an archive
@@ -141,4 +138,6 @@ window.onload = function() {
 			}
 		});
 	};
-};
+	
+	fileInput.disabled = false;
+});

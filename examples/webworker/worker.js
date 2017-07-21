@@ -6,6 +6,7 @@
 importScripts("polyfill.js");
 importScripts("../../js/uncompress.js");
 
+// FIXME: Make this use a callback
 // Load all the archive formats
 loadArchiveFormats(['rar', 'zip', 'tar']);
 
