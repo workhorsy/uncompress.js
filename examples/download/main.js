@@ -61,7 +61,7 @@ document.getElementById('go').addEventListener('click', function() {
 				var array_buffer = this.result;
 
 				// Open the file as an archive
-				var archive = archiveOpenArrayBuffer("example.rar", password, array_buffer);
+				var archive = archiveOpenArrayBuffer("example_rar_5.rar", password, array_buffer);
 				if (archive) {
 					console.info('Uncompressing ' + archive.archive_type + ' ...');
 					entryList.innerHTML = '';
