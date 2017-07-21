@@ -18,6 +18,7 @@ function loadScript(url, cb) {
 	// Web Worker
 	} else if (typeof importScripts === 'function') {
 		importScripts(url);
+		if (cb) cb();
 	}
 }
 
@@ -90,10 +91,19 @@ function loadArchiveFormats(formats, cb) {
 	// Get the path of the current script
 	var path = currentScriptPath();
 	var load_counter = 0;
-	
+
 	var checkForLoadDone = function() {
 		load_counter++;
-		if (load_counter === formats.length + 1) {
+
+		// Get the total number of loads before we are done loading
+		// If loading RAR in a Window, have 1 extra load.
+		var load_total = formats.length;
+		if (formats.indexOf('rar') !== -1 && typeof window === 'object') {
+			load_total++;
+		}
+
+		// run the callback if the last script has loaded
+		if (load_counter === load_total) {
 			cb();
 		}
 	}
