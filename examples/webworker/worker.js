@@ -43,7 +43,7 @@ function getFileMimeType(file_name) {
 
 function onUncompress(archive) {
 	// Get only the entries that are images
-	var entries = [];
+	let entries = [];
 	archive.entries.forEach(function(entry) {
 		if (isValidImageType(entry.name)) {
 			entries.push(entry);
@@ -51,15 +51,15 @@ function onUncompress(archive) {
 	});
 
 	// Uncompress each entry and send it to the client
-	var onEach = function(i) {
+	let onEach = function(i) {
 		if (i >= entries.length) {
 			return;
 		}
 
-		var entry = entries[i];
+		let entry = entries[i];
 		entry.readData(function(data, err) {
 			if (err) {
-				var message = {
+				let message = {
 					action: 'error',
 					error: err
 				};
@@ -68,10 +68,10 @@ function onUncompress(archive) {
 			}
 
 			if (entry.is_file && data) {
-				var blob = new Blob([data], {type: getFileMimeType(entry.name)});
-				var url = URL.createObjectURL(blob);
+				let blob = new Blob([data], {type: getFileMimeType(entry.name)});
+				let url = URL.createObjectURL(blob);
 
-				var message = {
+				let message = {
 					action: 'uncompress_each',
 					file_name: entry.name,
 					url: url,
@@ -91,18 +91,18 @@ self.addEventListener('message', function(e) {
 	switch (e.data.action) {
 		case 'uncompress_start':
 			// Get the file data
-			var array_buffer = e.data.array_buffer;
-			var file_name = e.data.file_name;
-			var password = e.data.password;
+			let array_buffer = e.data.array_buffer;
+			let file_name = e.data.file_name;
+			let password = e.data.password;
 
 			// Open the array buffer as an archive
 			try {
-				var archive = archiveOpenArrayBuffer(file_name, password, array_buffer);
+				let archive = archiveOpenArrayBuffer(file_name, password, array_buffer);
 				console.info('Uncompressing ' + archive.archive_type + ' ...');
 				onUncompress(archive);
 			// Otherwise show an error
 			} catch (e) {
-				var message = {
+				let message = {
 					action: 'error',
 					error: e.message
 				};

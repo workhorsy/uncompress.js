@@ -2,13 +2,13 @@
 // This software is licensed under a MIT License
 // https://github.com/workhorsy/uncompress.js
 
-var fileInput = document.getElementById('fileInput');
-var filePassword = document.getElementById('filePassword');
-var entryList = document.getElementById('entryList');
-var errorList = document.getElementById('errorList');
+let fileInput = document.getElementById('fileInput');
+let filePassword = document.getElementById('filePassword');
+let entryList = document.getElementById('entryList');
+let errorList = document.getElementById('errorList');
 
 function onArchiveLoaded(archive) {
-	var is_error = false;
+	let is_error = false;
 	archive.entries.forEach(function(entry) {
 		if (! entry.is_file) return;
 		if (is_error) return false;
@@ -27,7 +27,7 @@ function onArchiveLoaded(archive) {
 			'<b>Uncompressed Size:</b> ' + entry.size_uncompressed + '<br />' +
 			'<b>Is File:</b> ' + entry.is_file + '<br />';
 
-			var url = URL.createObjectURL(new Blob([data]));
+			let url = URL.createObjectURL(new Blob([data]));
 			entryList.innerHTML += '<a href="' + url + '">download</a>' + '<br />';
 
 			entryList.innerHTML += '<hr />';
@@ -45,9 +45,9 @@ loadArchiveFormats(['rar', 'zip', 'tar'], function() {
 		}
 
 		// Get the selected file
-		var file = fileInput.files[0];
+		let file = fileInput.files[0];
 
-		var password = filePassword.value;
+		let password = filePassword.value;
 
 		// Open the file as an archive
 		archiveOpenFile(file, password, function(archive, err) {

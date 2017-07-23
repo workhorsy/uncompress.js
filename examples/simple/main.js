@@ -3,7 +3,7 @@
 // https://github.com/workhorsy/uncompress.js
 
 
-var entryList = null;
+let entryList = null;
 
 // FIXME: This function is super inefficient
 function isValidImageType(file_name) {
@@ -52,8 +52,8 @@ function toFriendlySize(size) {
 }
 
 function onClick(entry) {
-	var errorList = document.getElementById('errorList');
-	var img = document.getElementById('currentImage');
+	let errorList = document.getElementById('errorList');
+	let img = document.getElementById('currentImage');
 	img.src = '';
 
 	entry.readData(function(data, err) {
@@ -63,8 +63,8 @@ function onClick(entry) {
 		}
 
 		// Convert the data into an Object URL
-		var blob = new Blob([data], {type: getFileMimeType(entry.name)});
-		var url = URL.createObjectURL(blob);
+		let blob = new Blob([data], {type: getFileMimeType(entry.name)});
+		let url = URL.createObjectURL(blob);
 
 		img.src = url;
 		img.onload = function() {
@@ -75,7 +75,7 @@ function onClick(entry) {
 
 function createLinkForEachEntry(archive) {
 	// Get only the entries that are images
-	var entries = [];
+	let entries = [];
 	archive.entries.forEach(function(entry) {
 		if (isValidImageType(entry.name)) {
 			entries.push(entry);
@@ -89,7 +89,7 @@ function createLinkForEachEntry(archive) {
 			entryList.appendChild(document.createElement('br'));
 
 			// Add a link to the Object URL
-			var a = document.createElement('a');
+			let a = document.createElement('a');
 			a.innerHTML = entry.name + ' (' + toFriendlySize(entry.size_uncompressed) + ')';
 			a.href = '#' + entry.name;
 
@@ -109,7 +109,7 @@ function createLinkForEachEntry(archive) {
 // Load all the archive formats
 loadArchiveFormats(['rar', 'zip', 'tar'], function() {
 	entryList = document.getElementById('entryList');
-	var fileInput = document.getElementById('fileInput');
+	let fileInput = document.getElementById('fileInput');
 
 	fileInput.onchange = function() {
 		// Just return if there is no file selected
@@ -123,8 +123,8 @@ loadArchiveFormats(['rar', 'zip', 'tar'], function() {
 		document.getElementById('currentImage').src = '';
 
 		// Get the file's info
-		var file = fileInput.files[0];
-		var password = document.getElementById('filePassword').value;
+		let file = fileInput.files[0];
+		let password = document.getElementById('filePassword').value;
 
 		// Open the file as an archive
 		archiveOpenFile(file, password, function(archive, err) {
