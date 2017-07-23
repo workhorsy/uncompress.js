@@ -23,7 +23,7 @@ function httpRequest(url, method, cb, timeout) {
 }
 
 function onArchiveLoaded(archive) {
-	var entryList = document.getElementById('entryList');
+	let entryList = document.getElementById('entryList');
 
 	archive.entries.forEach(function(entry) {
 		if (! entry.is_file) return;
@@ -35,7 +35,7 @@ function onArchiveLoaded(archive) {
 			'<b>Uncompressed Size:</b> ' + entry.size_uncompressed + '<br />' +
 			'<b>Is File:</b> ' + entry.is_file + '<br />';
 
-			var url = URL.createObjectURL(new Blob([data]));
+			let url = URL.createObjectURL(new Blob([data]));
 			entryList.innerHTML += '<a href="' + url + '">download</a>' + '<br />';
 
 			entryList.innerHTML += '<hr />';
@@ -45,25 +45,25 @@ function onArchiveLoaded(archive) {
 
 // Load all the archive formats
 loadArchiveFormats(['rar', 'zip', 'tar'], function() {
-	var button = document.getElementById('go');
+	let button = document.getElementById('go');
 	button.innerHTML = "Download and extract";
 	button.disabled = false;
 });
 
 document.getElementById('go').addEventListener('click', function() {
-	var entryList = document.getElementById('entryList');
+	let entryList = document.getElementById('entryList');
 	entryList.innerHTML = '';
-	var password = document.getElementById('filePassword').value;
+	let password = document.getElementById('filePassword').value;
 
-	var url = document.getElementById('download_url').value;
+	let url = document.getElementById('download_url').value;
 	httpRequest(url, 'GET', function(response, status) {
 		if (status === 200) {
-			var fileReader = new FileReader();
+			let fileReader = new FileReader();
 			fileReader.onload = function() {
-				var array_buffer = this.result;
+				let array_buffer = this.result;
 
 				// Open the file as an archive
-				var archive = archiveOpenArrayBuffer("example_rar_5.rar", password, array_buffer);
+				let archive = archiveOpenArrayBuffer("example_rar_5.rar", password, array_buffer);
 				if (archive) {
 					console.info('Uncompressing ' + archive.archive_type + ' ...');
 					entryList.innerHTML = '';

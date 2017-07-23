@@ -2,7 +2,7 @@
 // This software is licensed under a MIT License
 // https://github.com/workhorsy/uncompress.js
 
-var entryList = null;
+let entryList = null;
 
 function toFriendlySize(size) {
 	if (size >= 1024000000) {
@@ -24,23 +24,23 @@ window.onload = function() {
 	entryList = document.getElementById('entryList');
 
 	// Create the web worker
-	var worker = new Worker('worker.js');
+	let worker = new Worker('worker.js');
 	worker.onmessage = function(e) {
 		switch (e.data.action) {
 			case 'uncompress_each':
-				var file_name = e.data.file_name;
-				var url = e.data.url;
-				var size = e.data.size;
+				let file_name = e.data.file_name;
+				let url = e.data.url;
+				let size = e.data.size;
 
 				// Add a BR to the document
 				entryList.appendChild(document.createElement('br'));
 
 				// Add a link to the Object URL
-				var a = document.createElement('a');
+				let a = document.createElement('a');
 				a.href = '#' + file_name;
 				a.innerHTML = file_name + ' (' + toFriendlySize(size) + ')';
 				a.addEventListener('click', function(e) {
-					var img = document.getElementById('currentImage');
+					let img = document.getElementById('currentImage');
 					img.src = url;
 				});
 
@@ -55,7 +55,7 @@ window.onload = function() {
 	// Try loading each archive that is selected
 	document.getElementById('fileInput').onchange = function() {
 		// Just return if there is no file selected
-		var file_input = document.getElementById('fileInput');
+		let file_input = document.getElementById('fileInput');
 		if (file_input.files.length === 0) {
 			entryList.innerHTML = 'No file selected';
 			return;
@@ -67,18 +67,18 @@ window.onload = function() {
 		document.getElementById('currentImage').src = '';
 
 		// Get the file's info
-		var file = file_input.files[0];
-		var blob = file.slice();
-		var file_name = file.name;
-		var password = document.getElementById('filePassword').value;
+		let file = file_input.files[0];
+		let blob = file.slice();
+		let file_name = file.name;
+		let password = document.getElementById('filePassword').value;
 
 		// Convert the blob into an array buffer
-		var reader = new FileReader();
+		let reader = new FileReader();
 		reader.onload = function(evt) {
-			var array_buffer = reader.result;
+			let array_buffer = reader.result;
 
 			// Send the file name and array buffer to the web worker
-			var message = {
+			let message = {
 				action: 'uncompress_start',
 				file_name: file_name,
 				array_buffer: array_buffer,
