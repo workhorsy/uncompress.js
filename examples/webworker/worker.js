@@ -6,10 +6,6 @@
 importScripts("polyfill.js");
 importScripts("../../js/uncompress.js");
 
-// Load all the archive formats
-loadArchiveFormats(['rar', 'zip', 'tar'], function() {
-	console.info("Worker ready ...");
-});
 
 // FIXME: This function is super inefficient
 function isValidImageType(file_name) {
@@ -111,3 +107,9 @@ self.addEventListener('message', function(e) {
 			break;
 	}
 }, false);
+
+// Load all the archive formats, then signal that we are ready to use
+loadArchiveFormats(['rar', 'zip', 'tar'], function() {
+	self.postMessage({ action: 'ready' });
+	console.info("Worker ready ...");
+});

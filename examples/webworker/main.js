@@ -49,6 +49,9 @@ window.onload = function() {
 			case 'error':
 				entryList.innerHTML = '<span style="color: red">' + e.data.error + '</span>';
 				break;
+			case 'ready':
+				document.getElementById('fileInput').disabled = false;
+				break;
 		}
 	};
 
