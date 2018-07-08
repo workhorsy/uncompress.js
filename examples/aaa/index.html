@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>uncompress.js</title>
+		<script src="../../js/uncompress.js"></script>
+		<script src="polyfill.js"></script>
+		<style>
+			#currentImage {
+				width: 60%;
+				height: auto;
+				border: 1px solid black;
+				float: right;
+			}
+		</style>
+		<script id="worker1" type="javascript/worker">
+		  // This script won't be parsed by JS engines because its type is javascript/worker.
+		  function getCurrentScriptPath() {
+			  if (document && document.currentScript) {
+				  return document.currentScript.src;
+			  } else if (self && self.pathname) {
+				  return self.pathname;
+			  } else if (self && self.location && self.location.pathname) {
+				  return self.location.pathname;
+			  }
+		  }
+		  self.onmessage = function(e) {
+			//console.log("getCurrentScriptPath: " + getCurrentScriptPath());
+
+			self.postMessage('msg from worker');
+		  };
+		  // Rest of your worker code goes here.
+		</script>
+	</head>
+	<body>
+		<h1>Uncompress a file in the browser</h1>
+
+		<div>
+			<img id="currentImage" alt="No image loaded" />
+		</div>
+
+		<div>
+			<p>
+				<input id="fileInput" type="file" required="required" disabled="true" />
+			</p>
+			<p>
+				password: <input id="filePassword" type="password" />
+			</p>
+
+			<p>
+				This will uncompress each entry when the link is clicked on
+			</p>
+			<div id="errorList" style="color: red;"></div>
+			<div id="entryList"></div>
+
+			<p>
+				Try it on these archives that contain images:
+				<ul>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example_rar_5.rar?raw=true">example_rar_5.rar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.tar?raw=true">example.tar</a></li>
+					<li><a href="https://github.com/workhorsy/uncompress.js/blob/master/example.zip?raw=true">example.zip</a></li>
+				</ul>
+			</p>
+		</div>
+		<script src="main.js"></script>
+	</body>
+</html>
