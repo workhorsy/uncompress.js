@@ -152,16 +152,3 @@ worker.onmessage = function(e) {
   console.log("Received: " + e.data);
 }
 worker.postMessage("hello"); // Start the worker.
-
-
-function getCurrentScriptPath() {
-	if (document && document.currentScript) {
-		return document.currentScript.src;
-	} else if (self && self.pathname) {
-		return self.pathname;
-	} else if (self && self.location && self.location.pathname) {
-		return self.location.pathname;
-	}
-}
-
-console.log("getCurrentScriptPath: " + getCurrentScriptPath());

@@ -21,113 +21,20 @@ function loadScript(url, cb) {
 		if (cb) cb();
 	}
 }
-/*
-function getCallStack() {
-	try {
-		throw new Error('');
-	} catch (e) {
-		return e.stack;
-	}
-}
 
-function getCallStackTopLine(stack) {
-	let line = null;
-
-	// Chrome and IE
-	if (stack.indexOf('@') !== -1) {
-		line = stack.split('@')[1].split('\n')[0];
-	// Firefox
-	} else {
-		let first_line = stack.split('\n')[1];
-		//line = stack.split(/[\s][(]/)[1].split(/[)][\n]/);
-
-		let start = first_line.indexOf('(');
-		let end = first_line.lastIndexOf(':');
-		//let sep = first.lastIndexOf(':');
-		//console.info(line);
-		//line = line.split('(')[1].split(')')[0].split(':')[0];
-		line = first_line.substring(start + 1, end);
-		//console.info(line);
-
-		//line = line.substring(0, line.lastIndexOf('/')) + '/';
-		return line;
-	}
-}
-*/
 function currentScriptPath() {
-	// NOTE: document.currentScript does not work in a Web Worker
-	// So we have to parse a stack trace maually
-/*
-	let stack;
-	stack = getCallStack();
-	//console.info(stack);
-
-	// Firefox
-	stack =
-`getCallStack@http://localhost:8001/js/uncompress.js:27:9
-currentScriptPath@http://localhost:8001/js/uncompress.js:62:10
-loadArchiveFormats@http://localhost:8001/js/uncompress.js:149:13
-@http://localhost:8001/examples/aaa/main.js:110:1`;
-
-	stack =
-`getCallStack@http://localhost:8001/js/uncompress%20(aaa).js:27:9
-currentScriptPath@http://localhost:8001/js/uncompress%20(aaa).js:62:10
-loadArchiveFormats@http://localhost:8001/js/uncompress%20(aaa).js:140:13
-@http://localhost:8001/examples/aaa/main.js:110:1`;
-
-	// Edge
-	stack =
-`Error
-   at getCallStack (http://localhost:8001/js/uncompress.js:27:3)
-   at currentScriptPath (http://localhost:8001/js/uncompress.js:62:2)
-   at loadArchiveFormats (http://localhost:8001/js/uncompress.js:155:2)
-   at Global code (http://localhost:8001/examples/aaa/main.js:110:1)`;
-
-	stack =
-`Error
-   at getCallStack (http://localhost:8001/js/uncompress%20(aaa).js:27:3)
-   at currentScriptPath (http://localhost:8001/js/uncompress%20(aaa).js:62:2)
-   at loadArchiveFormats (http://localhost:8001/js/uncompress%20(aaa).js:162:2)
-   at Global code (http://localhost:8001/examples/aaa/main.js:110:1)`;
-
-	// Chrome
-	stack =
-`Error
-    at getCallStack (uncompress.js:27)
-    at currentScriptPath (uncompress.js:57)
-    at loadArchiveFormats (uncompress.js:128)
-    at main.js:110`;
-
-
-	stack =
-`Error
-	    at getCallStack (http://localhost:8003/js/uncompress(:8003/examples/aaa/bbb).js:27:9)
-	    at currentScriptPath (http://localhost:8003/js/uncompress(:8003/examples/aaa/bbb).js:62:10)
-	    at loadArchiveFormats (http://localhost:8003/js/uncompress(:8003/examples/aaa/bbb).js:171:13)
-	    at main.js:110`;
-
-	stack =
-`Error
-    at getCallStack (http://localhost:8001/js/uncompress%20(:8001/examples/aaa/aaa).js:27:9)
-    at currentScriptPath (http://localhost:8001/js/uncompress%20(:8001/examples/aaa/aaa).js:62:10)
-    at loadArchiveFormats (http://localhost:8001/js/uncompress%20(:8001/examples/aaa/aaa).js:134:13)
-    at main.js:110`;
-
-	let line = getCallStackTopLine(stack);
-	//console.info(line);
-
-	*/
 	let path = null;
-	if (document && document.currentScript) {
+	if (typeof document !== 'undefined' && document.currentScript) {
 		path = document.currentScript.src;
-	} else if (self && self.pathname) {
+	} else if (typeof self !== 'undefined' && self.pathname) {
 		path = self.pathname;
-	} else if (self && self.location && self.location.pathname) {
+	} else if (typeof self !== 'undefined' && self.location.pathname) {
 		path = self.location.pathname;
 	}
 
-	console.log(path.replace(/^[\\\/]*./, ''));
-	return path.replace(/^.*[\\\/]/, '');
+	path = path.substring(0, path.lastIndexOf('/') + 1);
+	console.log(path);
+	return path;
 }
 
 // This is used by libunrar.js to load libunrar.js.mem
