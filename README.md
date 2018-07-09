@@ -10,3 +10,11 @@ Works in Firefox, Chrome, and IE
 
 # Bugs and Corrections
 Please report a Bug if you suspect any of this information is wrong.
+
+
+# Examples can be viewed by using a python webserver
+
+```
+python -u -m http.server 9999
+python -u -m SimpleHTTPServer 9999
+```
