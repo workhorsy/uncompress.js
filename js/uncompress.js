@@ -32,8 +32,8 @@ function currentScriptPath() {
 		path = self.location.pathname;
 	}
 
-	path = path.substring(0, path.lastIndexOf('/') + 1);
 	console.log(path);
+	path = path.substring(0, path.lastIndexOf('/') + 1);
 	return path;
 }
 
@@ -83,7 +83,7 @@ function saneMap(array, cb) {
 
 function loadArchiveFormats(formats, cb) {
 	// Get the path of the current script
-	let path = currentScriptPath();
+	let path = currentScriptPath() + '../../js/';
 	let load_counter = 0;
 
 	let checkForLoadDone = function() {
