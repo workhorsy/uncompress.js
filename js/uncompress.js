@@ -28,7 +28,7 @@ function currentScriptPath() {
 		path = document.currentScript.src;
 	} else if (typeof self !== 'undefined' && self.pathname) {
 		path = self.pathname;
-	} else if (typeof self !== 'undefined' && self.location.pathname) {
+	} else if (typeof self !== 'undefined' && self.location && self.location.pathname) {
 		path = self.location.pathname;
 	}
 
