@@ -30,6 +30,8 @@ function currentScriptPath() {
 		path = self.pathname;
 	} else if (typeof self !== 'undefined' && self.location && self.location.pathname) {
 		path = self.location.pathname;
+	} else {
+		throw "Failed to get script path.";
 	}
 
 	console.log(path);
